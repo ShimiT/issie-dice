@@ -9,4 +9,7 @@
     yarn add three expo-three expo-gl
 
     yarn add --dev @types/three
+
+    export NODE_OPTIONS=--openssl-legacy-provider
+
     ```
