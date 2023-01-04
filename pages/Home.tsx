@@ -36,15 +36,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-<<<<<<< HEAD
-=======
   image: {
     flex: 1,
     width: '100%',
     height: '100%',
     justifyContent: "center"
   }
->>>>>>> da4b2b7ecca3ffd836bf7172e2eda47fb57a8b96
 });
 
 export default Home;
