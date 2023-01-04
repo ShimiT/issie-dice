@@ -65,34 +65,34 @@ function Cube(props: any) {
         const geometry = new BoxGeometry(1, 1, 1);
         var cubeMaterials = [
             new MeshBasicMaterial({
-                // color: 0xff0000,
+                color: 0xff0000,
                 map: loader.load(require('./assets/dice1.svg')),
-                transparent: true, opacity: 0.8, side: DoubleSide
+                transparent: true, opacity: 0.8, side: DoubleSide, reflectivity: 0
             }),
             new MeshBasicMaterial({
                 // color: 0xff0000,
                 map: loader.load(require('./assets/dice2.svg')),
-                transparent: true, opacity: 0.8, side: DoubleSide
+                transparent: true, opacity: 0.8, side: DoubleSide, reflectivity: 0
             }),
             new MeshBasicMaterial({
                 // color: 0xff0000,
                 map: loader.load(require('./assets/dice3.svg')),
-                transparent: true, opacity: 0.8, side: DoubleSide
+                transparent: true, opacity: 0.8, side: DoubleSide, reflectivity: 0
             }),
             new MeshBasicMaterial({
                 // color: 0xff0000,
                 map: loader.load(require('./assets/dice4.svg')),
-                transparent: true, opacity: 0.8, side: DoubleSide
+                transparent: true, opacity: 0.8, side: DoubleSide, reflectivity: 0
             }),
             new MeshBasicMaterial({
                 // color: 0xff0000,
                 map: loader.load(require('./assets/dice5.svg')),
-                transparent: true, opacity: 0.8, side: DoubleSide
+                transparent: true, opacity: 0.8, side: DoubleSide, reflectivity: 0
             }),
             new MeshBasicMaterial({
                 // color: 0xff0000,
                 map: loader.load(require('./assets/dice6.svg')),
-                transparent: true, opacity: 0.8, side: DoubleSide
+                transparent: true, opacity: 0.8, side: DoubleSide, reflectivity: 0
             })];
 
 
