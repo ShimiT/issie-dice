@@ -1,12 +1,17 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert, Pressable } from 'react-native';
 import { Button } from '@react-native-material/core';
+import Cube from '../cube';
+import { useState } from 'react';
 
 const Home = ({ navigation }) => {
+  const [click,setOnlicked]= useState(false)
   return (
+    <Pressable style={{height:"100%",width:"100%"}} onPress={()=>setOnlicked(true)}>
     <View style={styles.container}>
       <Text>Home page</Text>
-      <Button title="Material design button"></Button>
+      {click?<Cube></Cube>: ""}
     </View>
+  </Pressable>
   );
 };
 
