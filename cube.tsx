@@ -18,9 +18,14 @@ import {
     AxesHelper,
     Color,
 } from "three";
+import { Button, View } from 'react-native';
+
+const START_POS = new CANNON.Vec3(0, -15, 7);
+
 function Cube(props: any) {
 
     const [loader] = useState(new TextureLoader())
+    const [stateCube, setStateCube] = useState<any>(undefined);
     const onContextCreate = async (gl: any) => {
         // three.js implementation.
         const scene = new Scene();
@@ -32,7 +37,7 @@ function Cube(props: any) {
         );
 
         gl.canvas.width = gl.drawingBufferWidth;
-        gl.canvas.height=  gl.drawingBufferHeight;
+        gl.canvas.height = gl.drawingBufferHeight;
 
         // set camera position away from cube
         // camera.position.set(1,-17,8);
@@ -66,43 +71,20 @@ function Cube(props: any) {
         var cubeMaterials = [
             new MeshBasicMaterial({
                 color: 0xff0000,
-                map: loader.load(require('./assets/dice1.svg')),
-                transparent: true, opacity: 0.8, side: DoubleSide, reflectivity: 0
+                //map: loader.load(require('./profile-pic.png')),
+                transparent: true, opacity: 0.8, side: DoubleSide
             }),
-            new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice2.svg')),
-                transparent: true, opacity: 0.8, side: DoubleSide, reflectivity: 0
-            }),
-            new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice3.svg')),
-                transparent: true, opacity: 0.8, side: DoubleSide, reflectivity: 0
-            }),
-            new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice4.svg')),
-                transparent: true, opacity: 0.8, side: DoubleSide, reflectivity: 0
-            }),
-            new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice5.svg')),
-                transparent: true, opacity: 0.8, side: DoubleSide, reflectivity: 0
-            }),
-            new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice6.svg')),
-                transparent: true, opacity: 0.8, side: DoubleSide, reflectivity: 0
-            })];
 
 
-            // new MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8, side: DoubleSide }),
-            // new MeshBasicMaterial({ color: 0x0000ff, transparent: true, opacity: 0.8, side: DoubleSide }),
-            // new MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.8, side: DoubleSide }),
-            // new MeshBasicMaterial({ color: 0xff00ff, transparent: true, opacity: 0.8, side: DoubleSide }),
-            // new MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8, side: DoubleSide })];
+            new MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8, side: DoubleSide }),
+            new MeshBasicMaterial({ color: 0x0000ff, transparent: true, opacity: 0.8, side: DoubleSide }),
+            new MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.8, side: DoubleSide }),
+            new MeshBasicMaterial({ color: 0xff00ff, transparent: true, opacity: 0.8, side: DoubleSide }),
+            new MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8, side: DoubleSide })];
 
         const cube = new Mesh(geometry, cubeMaterials);
+
+
 
         // Add virtual world with gravity
         const world = new CANNON.World();
@@ -112,8 +94,8 @@ function Cube(props: any) {
         // Create a groud
         var groundMaterial = new CANNON.Material("ground");
         var groundShape = new CANNON.Plane();
-        var groundBody = new CANNON.Body({ mass: 0, material: groundMaterial });
-        groundBody.addShape(groundShape);
+        var groundBody = new CANNON.Body({ mass: 0, material: groundMaterial, shape: groundShape });
+        //groundBody.addShape(groundShape);
         world.addBody(groundBody);
 
         // create virtual cube
@@ -121,7 +103,7 @@ function Cube(props: any) {
         var vCube = new CANNON.Body({
             mass: 10, // kg
             position: new CANNON.Vec3(0, -15, 7), // m
-            shape: new CANNON.Box(new CANNON.Vec3(4, 4, 4)),
+            shape: new CANNON.Box(new CANNON.Vec3(1, 1, 1)),
             material: cubeMaterial,
             linearDamping: 0.1,
             //angularDamping: 0.02,
@@ -131,6 +113,8 @@ function Cube(props: any) {
 
 
         });
+
+        setStateCube(vCube);
 
         world.addBody(vCube);
 
@@ -149,9 +133,9 @@ function Cube(props: any) {
         //plane.quaternion.y = .5  ;
         //scene.add(plane);
 
-        // const axesHelper = new AxesHelper(15);
-        // axesHelper.setColors(new Color("green"), new Color("blue"), new Color("red"))
-        // scene.add(axesHelper);
+        const axesHelper = new AxesHelper(15);
+        axesHelper.setColors(new Color("green"), new Color("blue"), new Color("red"))
+        scene.add(axesHelper);
 
 
         const render = () => {
@@ -173,11 +157,17 @@ function Cube(props: any) {
     };
 
     return (
-        <GLView 
-            style={{ width: window.innerWidth, height: window.innerHeight - 20 }}
-            // style={{ flex: 1 }}
-            onContextCreate={onContextCreate}
-        />
+        <View>
+            <Button onPress={()=>{
+                stateCube.position =  new CANNON.Vec3(0, -15, 7);
+                stateCube.velocity= new CANNON.Vec3(0, 12, 0);
+                stateCube.angularVelocity= new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
+
+            }}>Reset</Button>
+            <GLView style={{ width: window.innerWidth, height: window.innerHeight - 20 }}
+                    onContextCreate={onContextCreate}
+            />
+        </View >
     )
 }
 
