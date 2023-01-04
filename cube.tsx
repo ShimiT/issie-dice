@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Alert, Pressable } from 'react-native';
 import { Renderer, TextureLoader } from 'expo-three';
 import { GLView } from 'expo-gl';
 import CANNON from 'cannon';
@@ -20,8 +21,14 @@ import {
 } from "three";
 
 function Cube(props: any) {
-
+    
     const [loader] = useState(new TextureLoader())
+    const [vec,setVec]= useState({x:0,y:-15,z:7})
+    const [stateCube, setStateCube] = useState<any>(undefined);
+    var vCube : any
+    var render : any
+    useEffect(()=>{console.log(vCube.position); setVec(vCube.position)}, [])
+
     const onContextCreate = async (gl: any) => {
         // three.js implementation.
         const scene = new Scene();
@@ -36,9 +43,9 @@ function Cube(props: any) {
         gl.canvas.height=  gl.drawingBufferHeight;
 
         // set camera position away from cube
-        // camera.position.set(1,-17,8);
-        // camera.quaternion.x = 0.6;
-        // camera.quaternion.z = 0.1;
+        //camera.position.set(1,-17,8);
+        //camera.quaternion.x = 0.6;
+        //camera.quaternion.z = 0.1;
 
         camera.position.set(1, -7, 10);
         camera.quaternion.x = 0.4;
@@ -67,7 +74,7 @@ function Cube(props: any) {
         var cubeMaterials = [
             new MeshBasicMaterial({
                 color: 0xff0000,
-                //map: loader.load(require('./profile-pic.png')),
+                //map: loader.load(require('./splash.png')),
                 transparent: true, opacity: 0.8, side: DoubleSide
             }),
 
@@ -94,9 +101,9 @@ function Cube(props: any) {
 
         // create virtual cube
         const cubeMaterial = new CANNON.Material("cube");
-        var vCube = new CANNON.Body({
+        vCube = new CANNON.Body({
             mass: 10, // kg
-            position: new CANNON.Vec3(0, -15, 7), // m
+            position: new CANNON.Vec3(vec.x, vec.y, vec.z), // m
             shape: new CANNON.Box(new CANNON.Vec3(1, 1, 1)),
             material: cubeMaterial,
             linearDamping: 0.1,
@@ -107,6 +114,8 @@ function Cube(props: any) {
 
 
         });
+        
+        setStateCube(vCube);
 
         world.addBody(vCube);
 
@@ -129,30 +138,45 @@ function Cube(props: any) {
         // axesHelper.setColors(new Color("green"), new Color("blue"), new Color("red"))
         // scene.add(axesHelper);
 
-
-        const render = () => {
-            requestAnimationFrame(render);
+        render = () => {
+             requestAnimationFrame(render);
 
             // // progress in the "world"
-            world.step(1 / 60);
+             world.step(1 / 40);
 
             // update opengl cube with virtual cube
             cube.position.copy(vCube.position as any);
             cube.quaternion.copy(vCube.quaternion as any);
+            //setVec(vCube.getWorldPosition)
+
 
             renderer.render(scene, camera);
-            gl.endFrameEXP();
+             gl.endFrameEXP();
         };
 
+        //setTimeout(()=>{setVec(cube.position)}, 5000)
         // call render
         render();
+        console.log('ss')
+        //setVec(vCube.position)
     };
 
+    console.log(vec)
     return (
-        <GLView style={{ width: window.innerWidth, height: window.innerHeight - 20 }}
-            onContextCreate={onContextCreate}
-        />
+        <Pressable style={{ height: "100%", width: "100%" }} onPress={() => {
+            console.log('clicked');
+            console.log(vec);
+            stateCube.position = vec;
+            var ex = Math.random() < 0.5 ? -1 : 1;
+            var mul = Math.random() * 12
+            stateCube.velocity= new CANNON.Vec3(mul * ex, 0, mul * ex);
+            stateCube.angularVelocity= new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
+        } }>
+            <GLView style={{ width: window.innerWidth, height: window.innerHeight - 20 }}
+            onContextCreate={onContextCreate} />
+        </Pressable>
     )
+    
 }
 
 export default Cube;
