@@ -29,23 +29,40 @@ const styles = StyleSheet.create({
 const TimeButtons = () => {
     const buttons = [
         {
+            id: 1,
             title: '0',
         },
         {
+            id: 2,
             title: '5',
         },
         {
+            id: 3,
             title: '10',
         },
         {
+            id: 4,
             title: '20',
         },
     ];
+
+    const handleTime = (timeInput) => {
+        if (timeInput == '0') {
+            console.log("pressed 0")
+        } else if (timeInput == '5') {
+
+        } else if (timeInput == '10') {
+
+        } else {
+            console.log("pressed 20")
+        }
+    }
 
     return (
         <Box style={styles.container}>
             {buttons.map(item => (
                 <Button
+                    key={item.id}
                     title={
                         <Box
                             style={{
@@ -70,6 +87,7 @@ const TimeButtons = () => {
                         </Box>
                     }
                     contentContainerStyle={styles.button}
+                    onPress={() => handleTime(item.title)}
                     style={{
                         backgroundColor: 'transparent',
                     }}></Button>

@@ -33,19 +33,7 @@ const Home = ({ navigation }: any) => {
     }
   }
 
-  const [time, setTime] = useState(0);
 
-  const handleTime = (timeInput) => {
-    if (timeInput == 0) {
-      console.log("pressed 0")
-    } else if (timeInput == 5) {
-
-    } else if (timeInput == 10) {
-
-    } else {
-      console.log("pressed 20")
-    }
-  }
 
 
   return (
