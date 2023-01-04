@@ -5,7 +5,7 @@ const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text>Home page</Text>
-      <Button title="Material design button"></Button>
+      <Button title="Material design button" onPress={}></Button>
     </View>
   );
 };
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
 });
 
 export default Home;

@@ -18,6 +18,7 @@ import {
     AxesHelper,
     Color,
 } from "three";
+
 function Cube(props: any) {
 
     const [loader] = useState(new TextureLoader())
