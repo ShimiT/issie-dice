@@ -124,9 +124,9 @@ function Cube(props: any) {
         //plane.quaternion.y = .5  ;
         //scene.add(plane);
 
-        const axesHelper = new AxesHelper(15);
-        axesHelper.setColors(new Color("green"), new Color("blue"), new Color("red"))
-        scene.add(axesHelper);
+        // const axesHelper = new AxesHelper(15);
+        // axesHelper.setColors(new Color("green"), new Color("blue"), new Color("red"))
+        // scene.add(axesHelper);
 
 
         const render = () => {
