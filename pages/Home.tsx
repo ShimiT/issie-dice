@@ -1,28 +1,28 @@
-import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, Pressable} from 'react-native';
 import { Button } from '@react-native-material/core';
+import Cube from '../cube';
+import { useState } from 'react';
 import * as Speech from 'expo-speech'
 
+
+
 const Home = ({ navigation }) => {
+  const [click,setOnlicked]= useState(false)
 
   const handlePress = () => {
     // Use the Tts.speak method to play the text as a sound
     console.log("yoni")
+    setOnlicked(true)
     Speech.speak("yoni")
   };
 
-
   return (
-      // <TouchableOpacity onPress={handlePress} style={styles.container}>
-        <View style={styles.container}>
-          <Text>Home page</Text>
-          <Button title="Material design button" onPress={handlePress}></Button>
-          {/* Add an input field to allow the user to enter a value */}
-          {/* <TextInput
-              value={input}
-              onChangeText={setInput}
-          /> */}
-        </View>
-      // </TouchableOpacity>
+    <Pressable style={{height:"100%",width:"100%"}} onPress={()=>setOnlicked(true)}>
+    <View style={styles.container}>
+      <Text>Home page</Text>
+      {click?<Cube></Cube>: ""}
+    </View>
+  </Pressable>
   );
 };
 
