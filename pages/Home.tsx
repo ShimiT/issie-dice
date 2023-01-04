@@ -1,12 +1,28 @@
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import { Button } from '@react-native-material/core';
+import * as Speech from 'expo-speech'
 
 const Home = ({ navigation }) => {
+
+  const handlePress = () => {
+    // Use the Tts.speak method to play the text as a sound
+    console.log("yoni")
+    Speech.speak("yoni")
+  };
+
+
   return (
-    <View style={styles.container}>
-      <Text>Home page</Text>
-      <Button title="Material design button"></Button>
-    </View>
+      // <TouchableOpacity onPress={handlePress} style={styles.container}>
+        <View style={styles.container}>
+          <Text>Home page</Text>
+          <Button title="Material design button" onPress={handlePress}></Button>
+          {/* Add an input field to allow the user to enter a value */}
+          {/* <TextInput
+              value={input}
+              onChangeText={setInput}
+          /> */}
+        </View>
+      // </TouchableOpacity>
   );
 };
 
