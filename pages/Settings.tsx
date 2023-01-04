@@ -3,14 +3,10 @@ import { Button } from '@react-native-material/core';
 import { TouchableOpacity, Image } from 'react-native';
 
 const Settnigs = ({ navigation }) => {
-  const navToSettings = () => {
-    return Settnigs
-};
     return (
-    <View style={styles.container}>
-      <Text>Home page</Text>
-      <SettingsButton></SettingsButton>
-    </View>
+      <View style={styles.container}>
+        <Text>Home page</Text>
+      </View>
   );
 };
 
