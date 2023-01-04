@@ -1,5 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from '@react-native-material/core';
+import { TouchableOpacity } from 'react-native';
+import { Header } from 'react-native/Libraries/NewAppScreen';
 
 const Home = ({ navigation }) => {
   return (
