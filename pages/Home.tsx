@@ -17,6 +17,13 @@ const Home = ({ navigation }) => {
     setOnlicked(true)
   };
 
+    // use state to store the current count
+    const [count, setCount] = useState(0);
+
+    // define event handlers for the buttons
+    const handleIncrement = () => setCount(count + 1);
+    const handleDecrement = () => setCount(count - 1);
+
   return (
     <Pressable style={{height:"100%",width:"100%"}} onPress={handlePress}>
     <View style={styles.container}>
