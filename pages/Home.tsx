@@ -4,20 +4,18 @@ import Cube from '../cube';
 import TimeButtons from '../components/timeButton';
 
 import { useState } from 'react';
-import * as Speech from 'expo-speech'
 import React from 'react';
 
 
 
-
-const Home = ({ navigation }) => {
-  const [click, setOnlicked] = useState(false)
+const Home = ({ navigation }: any) => {
+  const [boardMode, setBoardMode] = useState(false)
 
   const handlePress = () => {
     // Use the Tts.speak method to play the text as a sound
     console.log("yoni")
     // Speech.speak("Goren")
-    setOnlicked(true)
+    setBoardMode(true)
   };
 
   // use state to store the current count
@@ -51,12 +49,20 @@ const Home = ({ navigation }) => {
 
 
   return (
+    // <Pressable style={{ height: "100%", width: "100%" }} onPress={handlePress}>
+    //   <View style={styles.container}>
+    //     <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/background.png')} >
+    //       <Text>Home page</Text>
+    //       {/* {click?<Cube></Cube>: ""} */}
+    //       {<TimeButtons></TimeButtons>}
+    //     </ImageBackground>
+    //   </View>
+    // </Pressable>
     <Pressable style={{ height: "100%", width: "100%" }} onPress={handlePress}>
       <View style={styles.container}>
         <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/background.png')} >
           <Text>Home page</Text>
-          {/* {click?<Cube></Cube>: ""} */}
-          {<TimeButtons></TimeButtons>}
+          {boardMode && <Cube onBack={() => setBoardMode(false)} />}
         </ImageBackground>
       </View>
     </Pressable>
