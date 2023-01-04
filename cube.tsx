@@ -121,7 +121,7 @@ function Cube(props: any) {
         var vCube = new CANNON.Body({
             mass: 10, // kg
             position: new CANNON.Vec3(0, -15, 7), // m
-            shape: new CANNON.Box(new CANNON.Vec3(1, 1, 1)),
+            shape: new CANNON.Box(new CANNON.Vec3(4, 4, 4)),
             material: cubeMaterial,
             linearDamping: 0.1,
             //angularDamping: 0.02,
@@ -173,7 +173,9 @@ function Cube(props: any) {
     };
 
     return (
-        <GLView style={{ width: window.innerWidth, height: window.innerHeight - 20 }}
+        <GLView 
+            style={{ width: window.innerWidth, height: window.innerHeight - 20 }}
+            // style={{ flex: 1 }}
             onContextCreate={onContextCreate}
         />
     )
