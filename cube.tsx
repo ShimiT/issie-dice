@@ -231,8 +231,12 @@ function Cube(props: any) {
             stateCube.velocity= new CANNON.Vec3(mul * ex, 0, mul * ex);
             stateCube.angularVelocity= new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
         } }>
-            <GLView style={{ width: window.innerWidth, height: window.innerHeight - 20 }}
-            onContextCreate={onContextCreate} />
+            <GLView style={{ 
+                width: window.innerWidth - 40, 
+                height: window.innerHeight - 80,
+                top:40,
+            }}
+                onContextCreate={onContextCreate}/>
         </Pressable>
                 <View style={styles.sliderWrapper}>
                     <Text>X</Text><Slider style={styles.slider} minimumValue={-10} maximumValue={10}
@@ -259,13 +263,6 @@ function Cube(props: any) {
                         }} />
                 </View>
             </View>
-            <GLView style={{ 
-                width: window.innerWidth - 40, 
-                height: window.innerHeight - 80,
-                top:40,
-            }}
-                onContextCreate={onContextCreate}
-            />
         </View >
     )
     
