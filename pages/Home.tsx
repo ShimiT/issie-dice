@@ -1,7 +1,6 @@
 import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, Pressable } from 'react-native';
 import { Button } from '@react-native-material/core';
 import Cube from '../cube';
-import TimeButtons from '../components/timeButton';
 
 import { useState } from 'react';
 import React from 'react';
@@ -18,23 +17,6 @@ const Home = ({ navigation }: any) => {
     setBoardMode(true)
   };
 
-  // use state to store the current count
-  const [count, setCount] = useState(1);
-
-  // define event handlers for the buttons
-  const handleIncrement = () => {
-    if (count < 3) {
-      setCount(count + 1);
-    }
-  }
-  const handleDecrement = () => {
-    if (count > 1) {
-      setCount(count - 1);
-    }
-  }
-
-
-
 
   return (
     <Pressable style={{ height: "100%", width: "100%" }} onPress={handlePress}>
@@ -42,7 +24,6 @@ const Home = ({ navigation }: any) => {
         <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/background.png')} >
           <Text>Home page</Text>
           {boardMode && <Cube onBack={() => setBoardMode(false)} />}
-          {<TimeButtons></TimeButtons>}
         </ImageBackground>
       </View>
     </Pressable>
@@ -154,22 +135,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     maxWidth: 150,
   },
-  containerForCounterWrapper: {
-    // flex: 1,
-    flexDirection: 'row',
-    display: 'flex',
-    justifyContent: 'center',
-    width: '100%',
-  },
-  containerForCounter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: 50,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 10,
-    maxWidth: 150,
-  },
   image: {
     flex: 1,
     width: '100%',
@@ -189,13 +154,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFF',
-  },
-  count: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    width: 50,
-    textAlign: 'center',
   },
 });
 

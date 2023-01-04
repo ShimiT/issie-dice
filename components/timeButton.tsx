@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
         height: 56,
         borderRadius: 15,
         backgroundColor: '#1A191B',
+        // backgroundColor: { buttonColor },
     },
     buttonText: {
         fontWeight: 'bold',
@@ -45,6 +46,8 @@ const TimeButtons = () => {
             title: '20',
         },
     ];
+
+    var buttonColor = '#1A191B'
 
     const handleTime = (timeInput) => {
         if (timeInput == '0') {
@@ -87,6 +90,7 @@ const TimeButtons = () => {
                         </Box>
                     }
                     contentContainerStyle={styles.button}
+                    underlayColor='#fff'
                     onPress={() => handleTime(item.title)}
                     style={{
                         backgroundColor: 'transparent',
