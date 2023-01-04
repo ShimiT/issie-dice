@@ -7,6 +7,7 @@ const Home = ({ navigation }) => {
       <Text>Home page</Text>
       <Button title="Material design button"></Button>
     </View>
+
   );
 };
 

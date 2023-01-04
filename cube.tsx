@@ -23,7 +23,7 @@ function Cube(props: any) {
     const [loader] = useState(new TextureLoader())
     const onContextCreate = async (gl: any) => {
         // three.js implementation.
-        const scene = new Scene();
+        const scene = new Scene()
         const camera = new PerspectiveCamera(
             75,
             gl.drawingBufferWidth / gl.drawingBufferHeight,
@@ -33,6 +33,7 @@ function Cube(props: any) {
 
         gl.canvas.width = gl.drawingBufferWidth;
         gl.canvas.height=  gl.drawingBufferHeight;
+
 
         // set camera position away from cube
         // camera.position.set(1,-17,8);
