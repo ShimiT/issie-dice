@@ -1,19 +1,23 @@
-import { StyleSheet, View } from 'react-native';
-import Cube from './cube';
+import { StyleSheet, View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+const StackNav = createNativeStackNavigator();
+const { Navigator, Screen } = StackNav;
+
+import Home from './pages/Home';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Cube />
-    </View>
+    <NavigationContainer>
+      <Navigator>
+        <Screen
+          name="home"
+          component={Home}
+          options={{
+            title: 'Home'
+          }}
+        ></Screen>
+      </Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
