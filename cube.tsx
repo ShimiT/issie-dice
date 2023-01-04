@@ -31,8 +31,8 @@ function Cube(props: any) {
             1000
         );
 
-        gl.canvas.width = gl.drawingBufferWidth;
-        gl.canvas.height=  gl.drawingBufferHeight;
+        // gl.canvas.width = gl.drawingBufferWidth;
+        // gl.canvas.height=  gl.drawingBufferHeight;
 
         // set camera position away from cube
         // camera.position.set(1,-17,8);
@@ -42,6 +42,9 @@ function Cube(props: any) {
         camera.position.set(1, -7, 10);
         camera.quaternion.x = 0.4;
         camera.quaternion.z = 0.1;
+        camera.aspect = gl.drawingBufferWidth / gl.drawingBufferHeight;
+        camera.updateProjectionMatrix();
+
 
 
         // light:
