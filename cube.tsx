@@ -65,17 +65,42 @@ function Cube(props: any) {
         const geometry = new BoxGeometry(1, 1, 1);
         var cubeMaterials = [
             new MeshBasicMaterial({
-                color: 0xff0000,
-                //map: loader.load(require('./profile-pic.png')),
+                // color: 0xff0000,
+                map: loader.load(require('./assets/dice1.svg')),
                 transparent: true, opacity: 0.8, side: DoubleSide
             }),
+            new MeshBasicMaterial({
+                // color: 0xff0000,
+                map: loader.load(require('./assets/dice2.svg')),
+                transparent: true, opacity: 0.8, side: DoubleSide
+            }),
+            new MeshBasicMaterial({
+                // color: 0xff0000,
+                map: loader.load(require('./assets/dice3.svg')),
+                transparent: true, opacity: 0.8, side: DoubleSide
+            }),
+            new MeshBasicMaterial({
+                // color: 0xff0000,
+                map: loader.load(require('./assets/dice4.svg')),
+                transparent: true, opacity: 0.8, side: DoubleSide
+            }),
+            new MeshBasicMaterial({
+                // color: 0xff0000,
+                map: loader.load(require('./assets/dice5.svg')),
+                transparent: true, opacity: 0.8, side: DoubleSide
+            }),
+            new MeshBasicMaterial({
+                // color: 0xff0000,
+                map: loader.load(require('./assets/dice6.svg')),
+                transparent: true, opacity: 0.8, side: DoubleSide
+            })];
 
 
-            new MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8, side: DoubleSide }),
-            new MeshBasicMaterial({ color: 0x0000ff, transparent: true, opacity: 0.8, side: DoubleSide }),
-            new MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.8, side: DoubleSide }),
-            new MeshBasicMaterial({ color: 0xff00ff, transparent: true, opacity: 0.8, side: DoubleSide }),
-            new MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8, side: DoubleSide })];
+            // new MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8, side: DoubleSide }),
+            // new MeshBasicMaterial({ color: 0x0000ff, transparent: true, opacity: 0.8, side: DoubleSide }),
+            // new MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.8, side: DoubleSide }),
+            // new MeshBasicMaterial({ color: 0xff00ff, transparent: true, opacity: 0.8, side: DoubleSide }),
+            // new MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8, side: DoubleSide })];
 
         const cube = new Mesh(geometry, cubeMaterials);
 

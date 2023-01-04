@@ -12,12 +12,12 @@ const Home = ({ navigation }) => {
   const handlePress = () => {
     // Use the Tts.speak method to play the text as a sound
     console.log("yoni")
+    Speech.speak("Goren")
     setOnlicked(true)
-    Speech.speak("yoni")
   };
 
   return (
-    <Pressable style={{height:"100%",width:"100%"}} onPress={()=>setOnlicked(true)}>
+    <Pressable style={{height:"100%",width:"100%"}} onPress={handlePress}>
     <View style={styles.container}>
       <Text>Home page</Text>
       {click?<Cube></Cube>: ""}
