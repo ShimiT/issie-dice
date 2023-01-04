@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Renderer, TextureLoader } from 'expo-three';
 import { GLView } from 'expo-gl';
-import CANNON, { Body, Box, Material, Plane } from 'cannon';
+import CANNON, { Body, Box, Material, Plane, Vec3 } from 'cannon';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 
 const START_POS = new CANNON.Vec3(0, -15, 7);
 const getVelocity = () => new CANNON.Vec3(0, 12, 0);
 const getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
-
+const round = (num:number)=>(Math.round(num * 100) / 100).toFixed(2);
 import {
     Scene,
     Mesh,
@@ -30,6 +30,21 @@ function Cube(props: any) {
     const [loader] = useState(new TextureLoader())
     const [stateCube, setStateCube] = useState<any>(undefined);
     const [stateCamera, setStateCamera] = useState<PerspectiveCamera | undefined>(undefined);
+    const [reload, setReload] = useState<number>(0);
+    const [camPosition, setCamPosition] = useState<any>({x:0,y:0,z:0});
+
+    const updateCameraPosition = useCallback((field:"x" | "y" | "z", value:number)=> {
+        if (stateCamera) {
+            stateCamera.position[field] = value;
+            setReload(prev=>prev+1);
+        }
+    }, [stateCamera]);
+
+    useEffect(()=>{
+        if (stateCamera) {
+            setCamPosition({x:round(stateCamera.position.x), y:round(stateCamera.position.y), z:round(stateCamera.position.z)})
+        }
+    }, [stateCamera, reload]);
 
     const onContextCreate = async (gl: any) => {
         // three.js implementation.
@@ -151,6 +166,7 @@ function Cube(props: any) {
         var groundMaterial = new Material("ground");
         var groundShape = new Plane();
         var groundBody = new Body({ mass: 0, material: groundMaterial, shape: groundShape });
+        groundBody.position.z = -0.5;
         world.addBody(groundBody);
 
         // create virtual cube
@@ -206,35 +222,33 @@ function Cube(props: any) {
 
                     }} >Rethrow
                 </Pressable>
+                <Pressable
+                    style={styles.button}
+                    onPress={() => props.onBack()} >Back
+                </Pressable>
                 <View style={styles.sliderWrapper}>
-                    <Text>X</Text><Slider style={styles.slider} minimumValue={-10} maximumValue={10}
-                        onValueChange={(value) => {
-                            if (stateCamera) {
-                                stateCamera.position.x = value;
-                            }
-                        }} />
+                    <Text>X : {camPosition.x}</Text><Slider style={styles.slider} minimumValue={-10} maximumValue={10}
+                        value={stateCamera?.position.x}
+                        onValueChange={(value) => updateCameraPosition("x", value)} />
                 </View>
                 <View style={styles.sliderWrapper}>
-                    <Text>Y</Text><Slider style={styles.slider} minimumValue={-10} maximumValue={10}
-                        onValueChange={(value) => {
-                            if (stateCamera) {
-                                stateCamera.position.y = value;
-                            }
-                        }} />
+                    <Text>Y: {camPosition.y}</Text><Slider style={styles.slider} minimumValue={-10} maximumValue={10}
+                        onValueChange={(value) => updateCameraPosition("y", value)}
+                        value={stateCamera?.position.y}
+                    />
                 </View>
                 <View style={styles.sliderWrapper}>
-                    <Text>Z</Text><Slider style={styles.slider} minimumValue={0} maximumValue={30}
-                        onValueChange={(value) => {
-                            if (stateCamera) {
-                                stateCamera.position.z = value;
-                            }
-                        }} />
+                    <Text>Z: {camPosition.z}</Text><Slider style={styles.slider} minimumValue={0} maximumValue={30}
+                        onValueChange={(value) => updateCameraPosition("z", value)}
+                        
+                        value={stateCamera?.position.z}
+                    />
                 </View>
             </View>
-            <GLView style={{ 
-                width: window.innerWidth - 40, 
+            <GLView style={{
+                width: window.innerWidth - 40,
                 height: window.innerHeight - 80,
-                top:40,
+                top: 40,
             }}
                 onContextCreate={onContextCreate}
             />
@@ -250,7 +264,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         height: 35,
-        width:"100%"
+        width: "100%"
     },
     sliderWrapper: {
         flex: 1,
