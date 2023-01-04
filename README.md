@@ -6,6 +6,9 @@
 
     cd reactNative3D
 
+    to install all dependencies just run `yarn add`
+    
+    other option:
     yarn add three expo-three expo-gl
 
     yarn add --dev @types/three
