@@ -37,14 +37,6 @@ function createCamera(gl: ExpoWebGLRenderingContext) {
     gl.canvas.width = gl.drawingBufferWidth;
     gl.canvas.height = gl.drawingBufferHeight;
     
-     const pixelStorei = _gl.pixelStorei.bind(_gl)
-      _gl.pixelStorei = function(...args) { 
-        const [parameter] = args switch(parameter) {
-             case _gl.UNPACK_FLIP_Y_WEBGL: return pixelStorei(...args)
-        }
-     }
-    }
-    
     camera.position.set(1, -7, 10);
     camera.quaternion.x = 0.4;
     camera.quaternion.z = 0.1;
