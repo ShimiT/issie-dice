@@ -130,14 +130,6 @@ function createLights() {
     return [hemiLight, dirLight]
 }
 
-//create your forceUpdate hook
-function useForceUpdate() {
-    const [value, setValue] = useState(0); // integer state
-    return () => setValue(value => value + 1); // update state to force render
-    // An function that increment 👆🏻 the previous state like here 
-    // is better than directly setting `value + 1`
-}
-
 function Cube(props: any) {
     const [loader] = useState(new TextureLoader())
     const [vCubeState, setStateCubes] = useState<CANNON.Body[]>([])
@@ -239,18 +231,9 @@ function Cube(props: any) {
             requestAnimationFrame(render);
 
             // progress in the "world"
-<<<<<<< HEAD
-            world.step(1 / renderStep);
-            ss++
-            if (ss == 15) {
-                renderStep = 25
-            }
-
-=======
             world.step(1 / 30);
-            
-            
->>>>>>> ee816b5c9d02193f14392c982e45592b9ed1a6d4
+
+
             // update opengl cube with virtual cube
             for (let i = 0; i < vCubes.length; i++) {
                 cubes[i].position.copy(vCubes[i].position as any);

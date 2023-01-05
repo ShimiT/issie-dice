@@ -21,12 +21,7 @@ const Home = ({ navigation }: any) => {
     <Pressable style={{ height: "100%", width: "100%" }} onPress={handlePress}>
       <View style={styles.container}>
         <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/logo.svg')} >
-<<<<<<< HEAD
-          {/* <Text>Home page</Text> */}
-          {boardMode && <Cube setNumOfCubes={setNumOfCubes} />}
-=======
           {boardMode && <Cube onBack={() => setBoardMode(false)} />}
->>>>>>> ee816b5c9d02193f14392c982e45592b9ed1a6d4
         </ImageBackground>
       </View>
     </Pressable>
