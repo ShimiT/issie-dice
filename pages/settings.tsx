@@ -1,11 +1,9 @@
-import { Box, Text, Button } from '@react-native-material/core';
+import { Box, Text, Button, Flex } from '@react-native-material/core';
 import { StyleSheet, View } from 'react-native';
-import { useState } from 'react';
+import React, { useState, Component } from 'react';
 import TimeButtons from '../components/timeButton';
 import CubeCounter from '../components/cubesCounter';
 import OnOffLayer from '../components/onOffLayer';
-
-
 
 const styles = StyleSheet.create({
     container: {
@@ -16,28 +14,35 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: 100,
+        // marginTop: 100,
     },
-    button: {
-        width: 71,
-        height: 56,
-        borderRadius: 15,
-        backgroundColor: '#1A191B',
+    text: {
+        marginTop: 50,
+        color: '#BABABA',
     },
-    buttonText: {
-        fontWeight: 'bold',
-    },
-    buttonCaptionText: {
-        fontWeight: 'normal',
-    },
+    flex: {
+        // backgroundColor: '#0000003D'
+    }
 });
 
 const Settings = () => {
     return (
         <View style={styles.container}>
-            {<OnOffLayer></OnOffLayer>}
-            {<CubeCounter></CubeCounter>}
-            {<TimeButtons></TimeButtons>}
+            <Text style={styles.text}> Design Your Game</Text>
+            <Flex style={{ alignItems: 'center' }}>
+                <Flex>
+                    <Text style={styles.text}> Num of Cubes</Text>
+                    {<CubeCounter></CubeCounter>}
+                </Flex>
+            </Flex>
+            {/* <Image
+                style={styles.tinyLogo}
+                source={require('@expo/snack-static/react-native-logo.png')}
+            ></Image> */}
+            <Flex style={{ alignItems: 'center' }}>
+                {<OnOffLayer></OnOffLayer>}
+                {<TimeButtons></TimeButtons>}
+            </Flex>
         </View>
     );
 };

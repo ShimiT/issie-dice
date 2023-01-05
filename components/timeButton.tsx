@@ -1,6 +1,8 @@
 import { Box, Text, Button } from '@react-native-material/core';
 import { StyleSheet } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useGlobalStore } from "react-native-global-store";
+
 
 const styles = StyleSheet.create({
     container: {
@@ -11,7 +13,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: 100,
+        marginTop: 20,
     },
     button: {
         width: 71,
@@ -47,11 +49,28 @@ const TimeButtons = () => {
             title: '20',
         },
     ];
-
     const [isActive1, setIsActive1] = useState(false);
     const [isActive2, setIsActive2] = useState(false);
     const [isActive3, setIsActive3] = useState(false);
     const [isActive4, setIsActive4] = useState(false);
+    const [globalState] = useGlobalStore();
+    if (globalState.recoveryTime == 0) {
+        useEffect(()=>{
+            setIsActive1(true)
+        }, [])
+    } else if (globalState.recoveryTime == 5) {
+        useEffect(()=>{
+            setIsActive2(true)
+        }, [])
+    } else if (globalState.recoveryTime == 10) {
+        useEffect(()=>{
+            setIsActive3(true)
+        }, [])
+    } else if (globalState.recoveryTime == 20) {
+        useEffect(()=>{
+            setIsActive4(true)
+        }, [])
+    }
 
     const isActiveFunctions = [setIsActive1, setIsActive2, setIsActive3, setIsActive4]
 
@@ -80,7 +99,12 @@ const TimeButtons = () => {
 };
 
 const getButton = (item, buttonStyle, functions) => {
-    const handleTime = (timeInput) => {
+    const [globalState,setGlobalState] = useGlobalStore();
+
+    function setRecoveryTime(timeInput) {
+        setGlobalState({
+            recoveryTime: Number(timeInput)
+        });
         if (timeInput == '0') {
             console.log("pressed 0")
             setFunctions(0, functions)
@@ -133,7 +157,7 @@ const getButton = (item, buttonStyle, functions) => {
                 </Box>
             }
             contentContainerStyle={buttonStyle}
-            onPress={() => handleTime(item.title)}
+            onPress={() => setRecoveryTime(item.title)}
             style={{
                 backgroundColor: 'transparent',
             }}></Button>

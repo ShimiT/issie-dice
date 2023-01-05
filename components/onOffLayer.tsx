@@ -1,4 +1,4 @@
-import { Box, Text, Button } from '@react-native-material/core';
+import { Box, Text, Button, Flex } from '@react-native-material/core';
 import { View, Switch, StyleSheet, Image } from "react-native";
 import React, { useState } from 'react';
 import OnOffButton from '../components/onOffButton';
@@ -7,11 +7,11 @@ import OnOffButton from '../components/onOffButton';
 const onOffLayer = () => {
 
     return (
-        <Box style={styles.container}>
-            <Text color='white' style={styles.text}>Recovery Time</Text>
+        <Flex style={styles.container}>
+            <Text color='#BABABA' style={styles.text}>Recovery Time</Text>
             {/* <Image source={require('../assets/dice1.svg')}></Image> */}
             <OnOffButton></OnOffButton>
-        </Box>
+        </Flex>
     );
 };
 
@@ -22,13 +22,15 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         marginTop: 100,
-        backgroundColor: '#403B41',
+        backgroundColor: '#0000003D',
     },
     text: {
-        fontSize: 18,
-        marginRight: 10,
+        fontFamily: 'Poppins',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginRight: 20,
     },
 });
 

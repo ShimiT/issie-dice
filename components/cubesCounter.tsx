@@ -1,6 +1,6 @@
 import { Box, Text, Button } from '@react-native-material/core';
 import { StyleSheet, View } from 'react-native';
-import { useState } from 'react';
+import { useGlobalStore } from "react-native-global-store";
 
 const styles = StyleSheet.create({
     container: {
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: 110,
+        marginTop: 10,
         backgroundColor: '#1A191B',
         borderRadius: 15,
         // flex: 1,
@@ -50,21 +50,27 @@ const styles = StyleSheet.create({
     buttonText: {
         fontWeight: 'bold',
     },
+
 });
 
 const CubeCounter = () => {
-    // use state to store the current count
-    const [count, setCount] = useState(1);
+    const [globalState,setGlobalState] = useGlobalStore();
+    // use state to store the current diceNum
 
     // define event handlers for the buttons
     const handleIncrement = () => {
-        if (count < 3) {
-            setCount(count + 1);
+        if (globalState.count < 3) {
+
+            setGlobalState({
+                count: globalState.count + 1
+            });
         }
     }
     const handleDecrement = () => {
-        if (count > 1) {
-            setCount(count - 1);
+        if (globalState.count > 1) {
+            setGlobalState({
+                count: globalState.count - 1
+            });
         }
     }
 
@@ -74,7 +80,7 @@ const CubeCounter = () => {
             <Button title={<Text variant='body1' color="white" style={styles.buttonText}>-</Text>} contentContainerStyle={styles.button} onPress={handleDecrement}>
             </Button>
             <Box style={styles.countWrap}>
-                <Text style={styles.count}>{count}</Text>
+                <Text style={styles.count}>{globalState.count}</Text>
             </Box>
             <Button title={<Text variant='body1' color="white" style={styles.buttonText}>+</Text>} contentContainerStyle={styles.button} onPress={handleIncrement}>
             </Button>

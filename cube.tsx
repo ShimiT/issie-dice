@@ -136,15 +136,15 @@ function Cube(props: any) {
     const [camPosition, setCamPosition] = useState<any>({x:0,y:0,z:0});
     
 
-    const updateCameraPosition = useCallback((field:"x" | "y" | "z", value:number)=> {
+    const updateCameraPosition = useCallback((field: "x" | "y" | "z", value: number) => {
         if (stateCamera) {
             stateCamera.position[field] = value;
-            setReload(prev=>prev+1);
+            setReload(prev => prev + 1);
         }
     }, [stateCamera]);
-    useEffect(()=>{
+    useEffect(() => {
         if (stateCamera) {
-            setCamPosition({x:round(stateCamera.position.x), y:round(stateCamera.position.y), z:round(stateCamera.position.z)})
+            setCamPosition({ x: round(stateCamera.position.x), y: round(stateCamera.position.y), z: round(stateCamera.position.z) })
         }
     }, [stateCamera, reload]);
     
@@ -293,7 +293,7 @@ function Cube(props: any) {
                     height: "100%",
                     top: 40,
                 }}
-                onContextCreate={onContextCreate}
+                    onContextCreate={onContextCreate}
                 />
             </Pressable>
         </View >

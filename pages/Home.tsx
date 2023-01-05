@@ -1,7 +1,6 @@
 import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, Pressable } from 'react-native';
 import { Button } from '@react-native-material/core';
 import Cube from '../cube';
-
 import { useState } from 'react';
 import React from 'react';
 
@@ -21,7 +20,7 @@ const Home = ({ navigation }: any) => {
   return (
     <Pressable style={{ height: "100%", width: "100%" }} onPress={handlePress}>
       <View style={styles.container}>
-        <ImageBackground style={styles.image} resizeMode='center' source={require('../assets/background.png')} >
+        <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/logo.svg')} >
           {/* <Text>Home page</Text> */}
           {boardMode && <Cube/>}
         </ImageBackground>
