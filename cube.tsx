@@ -131,6 +131,14 @@ function createLights() {
     return [hemiLight, dirLight]
 }
 
+//create your forceUpdate hook
+function useForceUpdate() {
+    const [value, setValue] = useState(0); // integer state
+    return () => setValue(value => value + 1); // update state to force render
+    // An function that increment 👆🏻 the previous state like here 
+    // is better than directly setting `value + 1`
+}
+
 function Cube(props: any) {
     const [loader] = useState(new TextureLoader())
     const [vCubeState, setStateCubes] = useState<CANNON.Body[]>([])
@@ -141,10 +149,6 @@ function Cube(props: any) {
 
     const [numOfCubes, setNumOfCubes] = useState(globalState.count);
 
-    const [, updateState] = React.useState();
-
-
-
     const updateCameraPosition = useCallback((field: "x" | "y" | "z", value: number) => {
         if (stateCamera) {
             stateCamera.position[field] = value;
@@ -152,18 +156,14 @@ function Cube(props: any) {
         }
     }, [stateCamera]);
     useEffect(() => {
-        setNumOfCubes(globalState.count)
         if (stateCamera) {
             setCamPosition({ x: round(stateCamera.position.x), y: round(stateCamera.position.y), z: round(stateCamera.position.z) })
         }
-        if (numOfCubes != globalState.count) {
-            window.location.reload(true);
-        }
-        props.setNumOfCubes(true)
+        setNumOfCubes(globalState.count)
         console.log("state" + globalState.count)
     }, [stateCamera, reload, globalState]);
 
-    const forceUpdate = React.useCallback(() => updateState({}), [globalState.count]);
+    // const forceUpdate = React.useCallback(() => updateState({}), [globalState.count]);
 
     const onContextCreate = async (gl: any) => {
         const scene = new Scene();
@@ -177,6 +177,7 @@ function Cube(props: any) {
         // set size of buffer to be equal to drawing buffer width
         renderer.setSize(gl.drawingBufferWidth, gl.drawingBufferHeight);
 
+        console.log("create cube with num: " + numOfCubes)
         var cubes = createCubes(loader, numOfCubes)
         // add cube to scene
         for (let i = 0; i < cubes.length; i++) {
