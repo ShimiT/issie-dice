@@ -1,6 +1,6 @@
 import { Box, Text, Button } from '@react-native-material/core';
 import { StyleSheet, View } from 'react-native';
-import { useState } from 'react';
+import React, { useState, Component } from 'react';
 import TimeButtons from '../components/timeButton';
 import CubeCounter from '../components/cubesCounter';
 import OnOffLayer from '../components/onOffLayer';
@@ -41,5 +41,20 @@ const Settings = () => {
         </View>
     );
 };
+
+// class Settings extends React.Component {
+//     render() {
+//         const { goBack } = this.props.navigation;
+//         return (
+//             <View>
+//                 <Text>This is the home screen of the app</Text>
+//                 <Button
+//                     onPress={(props) => { this.props.navigation.goBack(null) }}
+//                     title="Go to Brent's profile"
+//                 />
+//             </View>
+//         )
+//     }
+// }
 
 export default Settings;

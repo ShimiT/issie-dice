@@ -3,6 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const StackNav = createNativeStackNavigator();
 const { Navigator, Screen } = StackNav;
 
+const Stack = createNativeStackNavigator();
+
 import Home from './pages/Home';
 import Settings from './pages/settings'
 
@@ -10,13 +12,14 @@ export default function App() {
   return (
     <NavigationContainer>
       <Navigator>
-        <Screen
+        <Stack.Screen
           name="home"
           component={Home}
           options={{
             title: 'Home'
           }}
-        ></Screen>
+        ></Stack.Screen>
+        <Stack.Screen name="Settings" component={Settings} />
       </Navigator>
     </NavigationContainer>
   );
