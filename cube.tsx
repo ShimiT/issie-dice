@@ -51,32 +51,32 @@ function createCubes(loader : TextureLoader, numOfCubes : number) {
     const cubeMaterials = [
         new MeshBasicMaterial({
             // color: 0xff0000,
-            map: loader.load(require('./assets/dice1.svg')),
+            map: loader.load(require('./assets/dice1.png')),
             transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
         }),
         new MeshBasicMaterial({
             // color: 0xff0000,
-            map: loader.load(require('./assets/dice2.svg')),
+            map: loader.load(require('./assets/dice2.png')),
             transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
         }),
         new MeshBasicMaterial({
             // color: 0xff0000,
-            map: loader.load(require('./assets/dice3.svg')),
+            map: loader.load(require('./assets/dice3.png')),
             transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
         }),
         new MeshBasicMaterial({
             // color: 0xff0000,
-            map: loader.load(require('./assets/dice4.svg')),
+            map: loader.load(require('./assets/dice4.png')),
             transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
         }),
         new MeshBasicMaterial({
             // color: 0xff0000,
-            map: loader.load(require('./assets/dice5.svg')),
+            map: loader.load(require('./assets/dice5.png')),
             transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
         }),
         new MeshBasicMaterial({
             // color: 0xff0000,
-            map: loader.load(require('./assets/dice6.svg')),
+            map: loader.load(require('./assets/dice6.png')),
             transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
     })];
 
