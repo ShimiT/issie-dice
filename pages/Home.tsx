@@ -1,6 +1,5 @@
 import { ImageBackground, View, StyleSheet, Pressable } from 'react-native';
 import Cube from '../cube';
-
 import { useState } from 'react';
 import React from 'react';
 
