@@ -1,27 +1,27 @@
 import {ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, Pressable} from 'react-native';
-import { Button } from '@react-native-material/core';
 import Cube from '../cube';
 import { useState } from 'react';
-import * as Speech from 'expo-speech'
 import React from 'react';
 
 
 
-const Home = ({ navigation }) => {
-  const [click,setOnlicked]= useState(false)
+const Home = ({ navigation }:any) => {
+  const [boardMode,setBoardMode]= useState(false)
 
   const handlePress = () => {
     // Use the Tts.speak method to play the text as a sound
     console.log("yoni")
     // Speech.speak("Goren")
-    setOnlicked(true)
+    setBoardMode(true)
   };
 
   return (
     <Pressable style={{height:"100%",width:"100%"}} onPress={handlePress}>
     <View style={styles.container}>
     <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/background.png')} >
-          {click?<Cube></Cube>: ""}
+          {/* {click?<Cube></Cube>: ""} */}
+         <Text>Home page</Text>
+          {boardMode && <Cube onBack={()=>setBoardMode(false)}/>}
       </ImageBackground>
     </View>
   </Pressable>
