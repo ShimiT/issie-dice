@@ -23,7 +23,7 @@ export default function App() {
             headerRight: () => (
               <SettingsButton></SettingsButton>
             ),
-            title: 'Home'
+            title: 'Issie-Dice'
           }}
         ></Stack.Screen>
         <Stack.Screen name="Settings" component={Settings} />
