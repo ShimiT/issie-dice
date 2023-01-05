@@ -30,11 +30,19 @@ const styles = StyleSheet.create({
     buttonCaptionText: {
         fontWeight: 'normal',
     },
+    tinyLogo: {
+        width: 50,
+        height: 50,
+    },
 });
 
 const Settings = () => {
     return (
         <View style={styles.container}>
+            {/* <Image
+                style={styles.tinyLogo}
+                source={require('@expo/snack-static/react-native-logo.png')}
+            ></Image> */}
             {<CubeCounter></CubeCounter>}
             {<OnOffLayer></OnOffLayer>}
             {<TimeButtons></TimeButtons>}
