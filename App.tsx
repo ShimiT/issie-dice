@@ -6,9 +6,9 @@ const StackNav = createNativeStackNavigator();
 const { Navigator, Screen } = StackNav;
 
 import Home from './pages/Home';
+import Settings from './pages/settings'
 
 export default function App() {
-  const [click,setOnlicked]= useState(false)
   return (
       <NavigationContainer>
         <Navigator>
