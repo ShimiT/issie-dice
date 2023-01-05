@@ -9,7 +9,6 @@ const Home = ({ navigation }: any) => {
 
   const handlePress = () => {
     // Use the Tts.speak method to play the text as a sound
-    console.log("yoni")
     // Speech.speak("Goren")
     setBoardMode(true)
   };

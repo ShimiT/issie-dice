@@ -154,16 +154,11 @@ function Cube(props: any) {
             setCamPosition({ x: round(stateCamera.position.x), y: round(stateCamera.position.y), z: round(stateCamera.position.z) })
         }
 
-        console.log("state" + globalState.count)
     }, [stateCamera, reload]);
 
     useEffect(() => {
         if (numOfCubes != globalState.count) {
-            console.log('in oif')
             setNumOfCubes(globalState.count)
-            // setGLKey(glkey + 1)
-            // onContextCreate(gl2)
-            console.log('in oif')
         }
     })
 
