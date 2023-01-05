@@ -227,21 +227,28 @@ function Cube(props: any) {
     console.log(vec)
     return (
         <View style={styles.main}>
-            {/* <Pressable
-        style={styles.button}
-        onPress={() => {
-            stateCube.position = START_POS.clone();
-            stateCube.velocity = getVelocity();
-            stateCube.angularVelocity = new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
+            
+            {/* <Pressable style={{ height: "100%", width: "100%" }} onPress={() => {
+            console.log('clicked');
+            console.log(vec);
+            stateCube.position = vec;
+            var ex = Math.random() < 0.5 ? -1 : 1;
+            var mul = Math.random() * 12
+            stateCube.velocity= new CANNON.Vec3(mul * ex, 0, mul * ex);
+            stateCube.angularVelocity= new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2); */}
 
-        }} >Rethrow
-    </Pressable>*/}
             <Pressable
                 style={styles.button}
                 onPress={() => props.onBack()}>Back
             </Pressable>
             <View>
-                <Pressable>
+                <Pressable style={{ height: "100%", width: "100%" }} onPress={() => {console.log('clicked');
+            console.log(vec);
+            stateCube.position = vec;
+            var ex = Math.random() < 0.5 ? -1 : 1;
+            var mul = Math.random() * 12
+            stateCube.velocity= new CANNON.Vec3(mul * ex, 0, mul * ex);
+            stateCube.angularVelocity= new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);}}>
                     <GLView style={{
                         width: window.innerWidth - 40,
                         height: window.innerHeight - 80,
