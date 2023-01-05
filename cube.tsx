@@ -193,7 +193,7 @@ function Cube(props: any) {
         const render = () => {
             requestAnimationFrame(render);
 
-            // // progress in the "world"
+            // progress in the "world"
             world.step(1 / 50);
 
             // update opengl cube with virtual cube
