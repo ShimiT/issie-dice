@@ -23,7 +23,7 @@ const Home = ({ navigation }: any) => {
       <View style={styles.container}>
         <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/background.png')} >
           <Text>Home page</Text>
-          {boardMode && <Cube onBack={() => setBoardMode(false)} />}
+          {boardMode && <Cube/>}
         </ImageBackground>
       </View>
     </Pressable>
