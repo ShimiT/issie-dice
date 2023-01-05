@@ -7,11 +7,12 @@ function MyButton({ }) {
     const navigation = useNavigation();
 
     return (
-        <MdSettings
-            title="Settings" 
-            onClick={() => navigation.navigate('Settings')}
-            size={30}
-        />
+        <View/>
+        // <MdSettings
+        //     //title="Settings" 
+        //     //onClick={() => navigation.navigate('Settings')}
+        //     size={30}
+        // />
     );
 }
 
