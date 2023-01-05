@@ -9,7 +9,7 @@ const START_POS = new CANNON.Vec3(0, -15, 7);
 var getVelocity = (x:number =0,y:number=0,z:number=0) => new CANNON.Vec3(x, y, z);
 var getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
 const round = (num:number)=>(Math.round(num * 100) / 100).toFixed(2);
-const numOfCubes = 3
+const numOfCubes = 30
 import {
     Scene,
     Mesh,
@@ -94,10 +94,11 @@ function createVCubes(cubeMaterial : CANNON.Material, numOfCubes : number) : Arr
     const cubeShape = new Box(new CANNON.Vec3(1, 1, 1));
 
     const vCubes = [];
+    const pos = [-1, 1];
     for (let i = 1; i <= numOfCubes; i++) {
         var vCube = new Body({
             mass: 10, // kg
-            position: new CANNON.Vec3(i * 2, -15, 7), // m
+            position: new CANNON.Vec3(i * pos[i%2], -15, 7), // m
             shape: cubeShape,
             material: cubeMaterial,
             linearDamping: 0.1,
