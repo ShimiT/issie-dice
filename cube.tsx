@@ -234,12 +234,11 @@ function Cube(props: any) {
                 </View>
             </View>
             <Pressable
-                    style={styles.button}
                     onPress={() => {
                         var ex = Math.random() < 0.5 ? -1 : 1;
                         var res = (Math.random() * 12)*ex
                         stateCube.velocity = getVelocity(res,res,res);
-                        stateCube.angularVelocity = new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
+                        stateCube.angularVelocity = new CANNON.Vec3(Math.random() * 10, Math.random() * 10, Math.random() * 10);
 
                     }} >
                 <GLView style={{
