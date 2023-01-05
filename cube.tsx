@@ -95,11 +95,11 @@ function createVCubes(cubeMaterial : CANNON.Material, numOfCubes : number) : Arr
     const cubeShape = new Box(new CANNON.Vec3(1, 1, 1));
 
     const vCubes = [];
-    const pos = [-13, 0, 13]
-    for (let i = 0; i < numOfCubes; i++) {
+    const pos = [-1, 1]
+    for (let i = 1; i <= numOfCubes; i++) {
         var vCube = new Body({
             mass: 10, // kg
-            position: new CANNON.Vec3(pos[i], -16, 7), // m
+            position: new CANNON.Vec3(i * pos[(i-1)%2] * 5, -16, 7), // m
             shape: cubeShape,
             material: cubeMaterial,
             linearDamping: 0.1,
@@ -281,8 +281,8 @@ function Cube(props: any) {
                             //var ex = Math.random() < 0.5 ? -1 : 1;
                             var res = (Math.random() * 12) + 2
                             var angVel = Math.random() * 10
-                            const pos = [-13, 0, 13]
-                            vCubeState[i].position = new CANNON.Vec3(pos[i], -16, 7)
+                            const pos = [-1, 1]
+                            vCubeState[i].position = new CANNON.Vec3((i+1) * pos[i%2] * 5, -16, 7)
                             vCubeState[i].velocity = getVelocity(0,3,5);
                             vCubeState[i].angularVelocity = new CANNON.Vec3(angVel,angVel,angVel);
                         }
