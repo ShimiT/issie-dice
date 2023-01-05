@@ -23,93 +23,6 @@ const Home = ({ navigation }: any) => {
       </View>
     </Pressable>
   );
-
-
-  // chat gpt
-
-  // const dropDownBar = ({ navigation }) => {
-  //   <View style={styles.container}>
-  //     <View style={styles.containerForCounterWrapper}>
-  //       <View style={styles.containerForRecoveryTimes}>
-  //         <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(0)}>
-  //           <Text style={styles.buttonText}>0</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(5)}>
-  //           <Text style={styles.buttonText}>5</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(10)}>
-  //           <Text style={styles.buttonText}>10</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(20)}>
-  //           <Text style={styles.buttonText}>20</Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </View>
-  //     <View style={styles.containerForCounterWrapper}>
-  //       <View style={styles.containerForCounter}>
-  //         <TouchableOpacity style={styles.button} onPress={handleDecrement}>
-  //           <Text style={styles.buttonText}>-</Text>
-  //         </TouchableOpacity>
-  //         <Text style={styles.count}>{count}</Text>
-  //         <TouchableOpacity style={styles.button} onPress={handleIncrement}>
-  //           <Text style={styles.buttonText}>+</Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </View>
-  //   </View>
-  // }
-
-
-  // return (
-  //   <View style={styles.container}>
-  //     <View style={styles.containerForCounterWrapper}>
-  //       <View style={styles.containerForRecoveryTimes}>
-  //         <Button title="5 seconds" style={timeStyles.timeButton} titleStyle={timeStyles.buttonText} onPress={() => handleTime(0)}>
-  //           {/* <Text style={styles.buttonText}>0</Text> */}
-  //         </Button>
-  //         <TouchableOpacity style={timeStyles.timeButton} onPress={() => handleTime(5)}>
-  //           <Text style={styles.buttonText}>5</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity style={timeStyles.timeButton} onPress={() => handleTime(10)}>
-  //           <Text style={styles.buttonText}>10</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity style={timeStyles.timeButton} onPress={() => handleTime(20)}>
-  //           <Text style={styles.buttonText}>20</Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </View>
-  //     <View style={styles.containerForCounterWrapper}>
-  //       <View style={styles.containerForCounter}>
-  //         <TouchableOpacity style={styles.button} onPress={handleDecrement}>
-  //           <Text style={styles.buttonText}>-</Text>
-  //         </TouchableOpacity>
-  //         <Text style={styles.count}>{count}</Text>
-  //         <TouchableOpacity style={styles.button} onPress={handleIncrement}>
-  //           <Text style={styles.buttonText}>+</Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </View>
-  //   </View>
-  // );
-
-  // return (
-  //   <View style={styles.containerForCounterWrapper}>
-  //     <View style={styles.containerForRecoveryTimes}>
-  //       <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(0)}>
-  //         <Text style={styles.buttonText}>0</Text>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(5)}>
-  //         <Text style={styles.buttonText}>5</Text>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(10)}>
-  //         <Text style={styles.buttonText}>10</Text>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(20)}>
-  //         <Text style={styles.buttonText}>20</Text>
-  //       </TouchableOpacity>
-  //     </View>
-  //   </View>
-  // );
 }
 
 
@@ -117,25 +30,15 @@ const Home = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#333034',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  containerForRecoveryTimes: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: 50,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 10,
-    maxWidth: 150,
+    backgroundColor: 'red',
+    // alignItems: 'center',
+    // justifyContent: 'center'
   },
   image: {
-    resizeMode: "center",
-    // flex: 1,
+    flex: 1,
+    justifyContent: "center",
     width: '100%',
     height: '90%',
-    justifyContent: "center"
   },
   button: {
     width: 50,
