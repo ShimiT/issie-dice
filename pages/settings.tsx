@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { useState } from 'react';
 import TimeButtons from '../components/timeButton';
 import CubeCounter from '../components/cubesCounter';
+import OnOffLayer from '../components/onOffLayer';
+
 
 
 const styles = StyleSheet.create({
@@ -32,6 +34,7 @@ const styles = StyleSheet.create({
 const Settings = () => {
     return (
         <View>
+            {<OnOffLayer></OnOffLayer>}
             {<CubeCounter></CubeCounter>}
             {<TimeButtons></TimeButtons>}
         </View>
