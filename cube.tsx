@@ -97,7 +97,7 @@ function createVCubes(cubeMaterial : CANNON.Material, numOfCubes : number) : Arr
     for (let i = 1; i <= numOfCubes; i++) {
         var vCube = new Body({
             mass: 10, // kg
-            position: START_POS.clone(), // m
+            position: new CANNON.Vec3(i * 2, -15, 7), // m
             shape: cubeShape,
             material: cubeMaterial,
             linearDamping: 0.1,
@@ -215,20 +215,14 @@ function Cube(props: any) {
 
         // Create contact material behaviour
         var cube_ground_mat = new CANNON.ContactMaterial(groundMaterial, cubeMaterial, { friction: 0.1, restitution: 0.7 });
-        //var cube_ground_mat2 = new CANNON.ContactMaterial(groundMaterial, cubeMaterial2, { friction: 0.1, restitution: 0.7 });
         world.addContactMaterial(cube_ground_mat);
-        //world.addContactMaterial(cube_ground_mat2);
-        var renderStep = 10
-        var ss = 1
+
         const render = () => {
             requestAnimationFrame(render);
             
             // progress in the "world"
-            world.step(1 / renderStep);
-            ss++
-            if (ss == 15) {
-                renderStep = 25
-            }
+            world.step(1 / 30);
+            
             
             // update opengl cube with virtual cube
             for (let i = 0; i < vCubes.length; i++) {
