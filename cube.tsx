@@ -164,6 +164,14 @@ function Cube(props: any) {
         console.log("state" + globalState.count)
     }, [stateCamera, reload]);
 
+    useEffect(() => {
+        if (numOfCubes != globalState.count) {
+            setNumOfCubes(globalState.count)
+            setGLKey(glkey + 1)
+            onContextCreate(gl2)
+        }
+    })
+
     // const forceUpdate = React.useCallback(() => updateState({}), [globalState.count]);
 
     const onContextCreate = async (gl: any) => {
