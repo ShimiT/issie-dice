@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 
 const START_POS = new CANNON.Vec3(0, -15, 7);
-const getVelocity = (x:number =0,y:number=0,z:number=0) => new CANNON.Vec3(0, y, 0);
+const getVelocity = (x:number =0,y:number=0,z:number=0) => new CANNON.Vec3(x, y, y);
 const getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
 const round = (num:number)=>(Math.round(num * 100) / 100).toFixed(2);
 import {
@@ -177,7 +177,7 @@ function Cube(props: any) {
             shape: cubeShape,
             material: cubeMaterial,
             linearDamping: 0.1,
-            velocity: getVelocity(0,12),
+            velocity: getVelocity(0,10,0),
             angularVelocity: getAngularVelocity(),
         });
 
@@ -194,7 +194,7 @@ function Cube(props: any) {
             requestAnimationFrame(render);
 
             // // progress in the "world"
-            world.step(1 / 60);
+            world.step(1 / 45);
 
             // update opengl cube with virtual cube
             cube.position.copy(vCube.position as any);
@@ -211,10 +211,6 @@ function Cube(props: any) {
     return (
         <View style={styles.main}>
             <View style={styles.slidersWrapper}>
-                <Pressable
-                    style={styles.button}
-                    onPress={() => props.onBack()} ><Text>Back</Text>
-                </Pressable>
                 <View style={styles.sliderWrapper}>
                     <Text>X : {camPosition.x}</Text><Slider style={styles.slider} minimumValue={-10} maximumValue={10}
                         value={stateCamera?.position.x}
@@ -237,7 +233,7 @@ function Cube(props: any) {
                     onPress={() => {
                         var ex = Math.random() < 0.5 ? -1 : 1;
                         var res = (Math.random() * 12)*ex
-                        stateCube.velocity = getVelocity(res,res,res);
+                        stateCube.velocity = getVelocity(res,0,res);
                         stateCube.angularVelocity = new CANNON.Vec3(Math.random() * 10, Math.random() * 10, Math.random() * 10);
 
                     }} >
