@@ -4,6 +4,7 @@ import { GLView } from 'expo-gl';
 import CANNON, { Body, Box, Material, Plane, Vec3 } from 'cannon';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
+import { Sound } from 'react-native-sound'
 
 const START_POS = new CANNON.Vec3(0, -15, 7);
 const getVelocity = (x: number = 0, y: number = 0, z: number = 0) => new CANNON.Vec3(0, y, 0);
@@ -107,6 +108,39 @@ function Cube(props: any) {
         // new MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.8, side: DoubleSide }),
         // new MeshBasicMaterial({ color: 0xff00ff, transparent: true, opacity: 0.8, side: DoubleSide }),
         // new MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8, side: DoubleSide })];
+
+
+        // Sound.setCategory('Playback');
+
+        // Sound.play('')
+
+        var diceSound = new Sound('./assets/rolling.mp3', Sound.MAIN_BUNDLE, (error) => {
+            if (error) {
+                console.log(error);
+                return;
+            }
+            diceSound.play((success) => {
+                if (success) {
+                    console.log('successfully finished playing');
+                } else {
+                    console.log('playback failed due to audio decoding errors');
+                }
+            });
+        });
+
+        diceSound.play();
+
+        // // Reduce the volume by half
+        // diceSound.setVolume(1);
+
+        // // Position the sound to the full right in a stereo field
+        // diceSound.setPan(1);
+
+        // // Loop indefinitely until stop() is called
+        // // diceSound.setNumberOfLoops(-1);
+
+        // // Release the audio player resource
+        // diceSound.release();
 
         const cube = new Mesh(geometry, cubeMaterials);
         cube.castShadow = true;
