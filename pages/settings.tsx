@@ -30,17 +30,17 @@ const Settings = () => {
         <View style={styles.container}>
             <Text style={styles.text}> Design Your Game</Text>
             <Flex style={{ alignItems: 'center' }}>
-                <Text style={styles.text}> Num of Cubes</Text>
                 <Flex>
-                    {<CubeCounter></CubeCounter>}
+                    {<OnOffLayer></OnOffLayer>}
                 </Flex>
             </Flex>
             {/* <Image
                 style={styles.tinyLogo}
                 source={require('@expo/snack-static/react-native-logo.png')}
             ></Image> */}
-            <Flex style={styles.flex}>
-                {<OnOffLayer></OnOffLayer>}
+            <Flex style={{ alignItems: 'center' }}>
+                <Text style={styles.text}> Num of Cubes</Text>
+                {<CubeCounter></CubeCounter>}
                 {<TimeButtons></TimeButtons>}
             </Flex>
         </View>
