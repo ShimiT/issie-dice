@@ -20,7 +20,7 @@ const Home = ({ navigation }: any) => {
   return (
     <Pressable style={{ height: "100%", width: "100%" }} onPress={handlePress}>
       <View style={styles.container}>
-        <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/logo.svg')} >
+        <ImageBackground style={styles.image} resizeMode='center' source={require('../assets/logo.svg')} >
           {/* <Text>Home page</Text> */}
           {boardMode && <Cube/>}
         </ImageBackground>
