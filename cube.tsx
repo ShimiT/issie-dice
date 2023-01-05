@@ -6,6 +6,10 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Sound } from 'react-native-sound'
 
+import rollingSound from './assets/rolling.mp3';
+
+// var Sound = require('react-native-sound');
+
 const START_POS = new CANNON.Vec3(0, -15, 7);
 const getVelocity = (x: number = 0, y: number = 0, z: number = 0) => new CANNON.Vec3(0, y, 0);
 const getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
@@ -110,15 +114,16 @@ function Cube(props: any) {
         // new MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8, side: DoubleSide })];
 
 
-        // Sound.setCategory('Playback');
+        Sound.setCategory('Playback');
 
         // Sound.play('')
 
-        var diceSound = new Sound('./assets/rolling.mp3', Sound.MAIN_BUNDLE, (error) => {
+        var diceSound = new Sound(rollingSound, (error) => {
             if (error) {
                 console.log(error);
                 return;
             }
+            console.log('sound load success')
             diceSound.play((success) => {
                 if (success) {
                     console.log('successfully finished playing');
