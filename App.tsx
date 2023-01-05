@@ -18,7 +18,7 @@ export default function App() {
       <Navigator>
         <Stack.Screen
           name="home"
-          component={Settings}
+          component={Home}
           options={{
             headerRight: () => (
               <SettingsButton></SettingsButton>
