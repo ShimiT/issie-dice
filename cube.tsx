@@ -11,6 +11,8 @@ var getVelocity = (x: number = 0, y: number = 0, z: number = 0) => new CANNON.Ve
 var getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
 const round = (num: number) => (Math.round(num * 100) / 100).toFixed(2);
 
+var numOfCubes, setNumOfCubes, prevNumOfCubes
+
 import {
     Scene,
     Mesh,
@@ -139,7 +141,7 @@ function Cube(props: any) {
     const [camPosition, setCamPosition] = useState<any>({ x: 0, y: 0, z: 0 });
     const [globalState, setGlobalState] = useGlobalStore();
 
-    const [numOfCubes, setNumOfCubes] = useState(globalState.count);
+    [numOfCubes, setNumOfCubes] = useState(globalState.count);
 
     const [glkey, setGLKey] = useState(0);
 
@@ -162,6 +164,7 @@ function Cube(props: any) {
     useEffect(() => {
         if (numOfCubes != globalState.count) {
             console.log('in oif')
+            prevNumOfCubes = numOfCubes
             setNumOfCubes(globalState.count)
             // setGLKey(glkey + 1)
             // onContextCreate(gl2)
@@ -301,14 +304,20 @@ function Cube(props: any) {
                     //top: 40
                 }}
                 onPress={() => {
+                    console.log('num ' + numOfCubes)
+                    console.log('length' + vCubeState.length)
                     for (let i = 0; i < vCubeState.length; i++) {
                         //var ex = Math.random() < 0.5 ? -1 : 1;
-                        var res = (Math.random() * 12) + 2
-                        var angVel = Math.random() * 10
-                        const pos = [-1, 1]
-                        vCubeState[i].position = new CANNON.Vec3((i + 1) * pos[i % 2] * 5, -16, 7)
-                        vCubeState[i].velocity = getVelocity(0, 3, 5);
-                        vCubeState[i].angularVelocity = new CANNON.Vec3(angVel, angVel, angVel);
+                        if (i < numOfCubes) {
+                            var res = (Math.random() * 12) + 2
+                            var angVel = Math.random() * 10
+                            const pos = [-1, 1]
+                            vCubeState[i].position = new CANNON.Vec3((i + 1) * pos[i % 2] * 5, -16, 7)
+                            vCubeState[i].velocity = getVelocity(0, 3, 5);
+                            vCubeState[i].angularVelocity = new CANNON.Vec3(angVel, angVel, angVel);
+                        } else {
+                            vCubeState[i].position = new CANNON.Vec3(-100, -100, -100)
+                        }
                     }
                 }} >
                 <GLView style={{
