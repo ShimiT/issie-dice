@@ -213,7 +213,7 @@ function Cube(props: any) {
             <View style={styles.slidersWrapper}>
                 <Pressable
                     style={styles.button}
-                    onPress={() => props.onBack()} >Back
+                    onPress={() => props.onBack()} ><Text>Back</Text>
                 </Pressable>
                 <View style={styles.sliderWrapper}>
                     <Text>X : {camPosition.x}</Text><Slider style={styles.slider} minimumValue={-10} maximumValue={10}
