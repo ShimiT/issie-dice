@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#333034',
         paddingLeft: 30,
         paddingRight: 30,
         display: 'flex',

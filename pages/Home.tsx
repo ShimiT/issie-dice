@@ -164,7 +164,7 @@ const timeStyles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#000',
+    backgroundColor: '#333034',
     borderRadius: 20,
   },
   buttonText: {

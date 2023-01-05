@@ -9,10 +9,11 @@ import OnOffLayer from '../components/onOffLayer';
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#333034',
         paddingLeft: 30,
         paddingRight: 30,
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginTop: 100,
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
 
 const Settings = () => {
     return (
-        <View>
+        <View style={styles.container}>
             {<OnOffLayer></OnOffLayer>}
             {<CubeCounter></CubeCounter>}
             {<TimeButtons></TimeButtons>}
