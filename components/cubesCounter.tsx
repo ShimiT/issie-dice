@@ -8,29 +8,47 @@ const styles = StyleSheet.create({
         // paddingLeft: 30,
         // paddingRight: 30,
         height: 30,
-        width: 170,
+        width: 100,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: 100,
+        marginTop: 110,
         backgroundColor: '#1A191B',
+        borderRadius: 15,
         // flex: 1,
     },
     button: {
-        width: 10,
+        width: 40,
         height: 30,
         backgroundColor: '#1A191B',
+        minWidth: 20,
     },
     count: {
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: 'bold',
-        marginLeft: 10,
-        marginRight: 10,
+        alignContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        // display: 'flex',
+        // flexDirection: 'row',
+        // marginLeft: 10,
+        // marginRight: 10,
         color: '#ffffff',
-        width: 20,
+        width: 30,
         height: 30,
+        // justifyContent: 'center',
         textAlign: 'center',
+    },
+    countWrap: {
+        backgroundColor: '#8C1CAC',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonText: {
+        fontWeight: 'bold',
     },
 });
 
@@ -53,10 +71,12 @@ const CubeCounter = () => {
 
     return (
         <Box style={styles.container}>
-            <Button title={<Text variant='body1' color="white">-</Text>} contentContainerStyle={styles.button} onPress={handleDecrement}>
+            <Button title={<Text variant='body1' color="white" style={styles.buttonText}>-</Text>} contentContainerStyle={styles.button} onPress={handleDecrement}>
             </Button>
-            <Text style={styles.count}>{count}</Text>
-            <Button title={<Text variant='body1' color="white">+</Text>} contentContainerStyle={styles.button} onPress={handleIncrement}>
+            <Box style={styles.countWrap}>
+                <Text style={styles.count}>{count}</Text>
+            </Box>
+            <Button title={<Text variant='body1' color="white" style={styles.buttonText}>+</Text>} contentContainerStyle={styles.button} onPress={handleIncrement}>
             </Button>
         </Box>
     );
