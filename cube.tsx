@@ -6,9 +6,10 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 
 const START_POS = new CANNON.Vec3(0, -15, 7);
-const getVelocity = (x:number =0,y:number=0,z:number=0) => new CANNON.Vec3(x, y, z);
-const getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
+var getVelocity = (x:number =0,y:number=0,z:number=0) => new CANNON.Vec3(x, y, z);
+var getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
 const round = (num:number)=>(Math.round(num * 100) / 100).toFixed(2);
+const numOfCubes = 3
 import {
     Scene,
     Mesh,
@@ -37,15 +38,7 @@ function createCamera(gl: ExpoWebGLRenderingContext) {
     gl.canvas.width = gl.drawingBufferWidth;
     gl.canvas.height = gl.drawingBufferHeight;
     
-     const pixelStorei = _gl.pixelStorei.bind(_gl)
-      _gl.pixelStorei = function(...args) { 
-        const [parameter] = args switch(parameter) {
-             case _gl.UNPACK_FLIP_Y_WEBGL: return pixelStorei(...args)
-        }
-     }
-    }
-    
-    camera.position.set(1, -7, 10);
+    camera.position.set(1, -15, 10);
     camera.quaternion.x = 0.4;
     camera.quaternion.z = 0.1;
 
@@ -88,8 +81,8 @@ function createCubes(loader : TextureLoader, numOfCubes : number) {
     })];
 
     const cubes = [];
-    for (let i = 0; i < numOfCubes; i++) {
-        const cube = new Mesh(geometry, cubeMaterials);
+    for (let i = 1; i <= numOfCubes; i++) {
+        var cube = new Mesh(geometry, cubeMaterials);
         cube.castShadow = true;
         cubes.push(cube);
     }
@@ -97,12 +90,12 @@ function createCubes(loader : TextureLoader, numOfCubes : number) {
     return cubes 
 }
 
-function createVCubes(cubeMaterial : CANNON.Material, numOfCubes : number) {
+function createVCubes(cubeMaterial : CANNON.Material, numOfCubes : number) : Array<CANNON.Body> {
     const cubeShape = new Box(new CANNON.Vec3(1, 1, 1));
 
     const vCubes = [];
-    for (let i = 0; i < numOfCubes; i++) {
-        const vCube = new Body({
+    for (let i = 1; i <= numOfCubes; i++) {
+        var vCube = new Body({
             mass: 10, // kg
             position: START_POS.clone(), // m
             shape: cubeShape,
@@ -110,6 +103,7 @@ function createVCubes(cubeMaterial : CANNON.Material, numOfCubes : number) {
             linearDamping: 0.1,
             velocity: getVelocity(0,10,0),
             angularVelocity: getAngularVelocity(),
+            //quaternion: new CANNON.Quaternion(10, 3, 10, 10)
         });
         vCubes.push(vCube);
     }
@@ -136,11 +130,11 @@ function createLights() {
 
 function Cube(props: any) {
     const [loader] = useState(new TextureLoader())
-    const [stateCube, setStateCube] = useState<CANNON.Body>(new Body());
-    const [stateCube2, setStateCube2] = useState<CANNON.Body>(new Body());
+    const [vCubeState, setStateCubes] = useState<CANNON.Body[]>([])
     const [stateCamera, setStateCamera] = useState<PerspectiveCamera | undefined>(undefined);
     const [reload, setReload] = useState<number>(0);
     const [camPosition, setCamPosition] = useState<any>({x:0,y:0,z:0});
+    
 
     const updateCameraPosition = useCallback((field:"x" | "y" | "z", value:number)=> {
         if (stateCamera) {
@@ -166,7 +160,7 @@ function Cube(props: any) {
         // set size of buffer to be equal to drawing buffer width
         renderer.setSize(gl.drawingBufferWidth, gl.drawingBufferHeight);
         
-        var cubes = createCubes(loader, 5)
+        var cubes = createCubes(loader, numOfCubes)
         // add cube to scene
         for (let i = 0; i < cubes.length; i++) {
             scene.add(cubes[i]);
@@ -212,38 +206,47 @@ function Cube(props: any) {
 
         // create virtual cubes
         const cubeMaterial = new CANNON.Material("cube");
-        var vCubes = createVCubes(cubeMaterial, 5)
+        var vCubes = createVCubes(cubeMaterial, numOfCubes)
         
         for (let i = 0; i < vCubes.length; i++) {
-            setStateCube(vCubes[i]);
             world.addBody(vCubes[i]);
         }
+        
+        setStateCubes(vCubes);
 
         // Create contact material behaviour
         var cube_ground_mat = new CANNON.ContactMaterial(groundMaterial, cubeMaterial, { friction: 0.1, restitution: 0.7 });
         //var cube_ground_mat2 = new CANNON.ContactMaterial(groundMaterial, cubeMaterial2, { friction: 0.1, restitution: 0.7 });
         world.addContactMaterial(cube_ground_mat);
         //world.addContactMaterial(cube_ground_mat2);
-
-
+        var renderStep = 10
+        var ss = 1
         const render = () => {
             requestAnimationFrame(render);
-
+            
             // progress in the "world"
-            world.step(1 / 50);
-
+            world.step(1 / renderStep);
+            ss++
+            if (ss == 15) {
+                renderStep = 25
+            }
+            
             // update opengl cube with virtual cube
-            for (let i = 0; i < cubes.length; i++) {
+            for (let i = 0; i < vCubes.length; i++) {
                 cubes[i].position.copy(vCubes[i].position as any);
                 cubes[i].quaternion.copy(vCubes[i].quaternion as any);
             }
 
             renderer.render(scene, camera);
+            
             gl.endFrameEXP();
         };
 
         // call render
         render();
+        console.log(vCubes[0])
+        console.log(vCubes[1])
+        console.log(vCubes[2])
         // } 
         // catch (error) {
         //     console.log("--------"+error)
@@ -277,16 +280,13 @@ function Cube(props: any) {
                         height: window.innerHeight - 80,
                         top: 40,}}
                     onPress={() => {
-                        var ex = Math.random() < 0.5 ? -1 : 1;
-                        var res = (Math.random() * 12)*ex
-                        var ex2 = Math.random() < 0.5 ? -1 : 1;
-                        var res2 = (Math.random() * 12)*ex2
-                        var angVel = Math.random() * 10
-                        var angVel2 = Math.random() * 10
-                        stateCube.velocity = getVelocity(res,0,res);
-                        stateCube.angularVelocity = new CANNON.Vec3(angVel,angVel,angVel);
-                        stateCube2.velocity = getVelocity(res2,0,res2);
-                        stateCube2.angularVelocity = new CANNON.Vec3(angVel2,angVel2,angVel2);
+                        for (let i = 0; i < vCubeState.length; i++) {
+                            var ex = Math.random() < 0.5 ? -1 : 1;
+                            var res = (Math.random() * 12)*ex
+                            var angVel = Math.random() * 10
+                            vCubeState[i].velocity = getVelocity(res,0,res);
+                            vCubeState[i].angularVelocity = new CANNON.Vec3(angVel,angVel,angVel);
+                        }
                     }} >
                 <GLView style={{
                     width: "100%",
