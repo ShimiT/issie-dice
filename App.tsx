@@ -14,10 +14,11 @@ import Settings from "./pages/settings";
 const initialState = {
     count: 1,
     recoveryTime: 10,
+    recoveryOn: false,
     size: 'M',
 };
 
-const persistedKeys = ["count","recoveryTime","size"];
+const persistedKeys = ["count","recoveryTime", "recoveryOn", "size"];
 
 
 
