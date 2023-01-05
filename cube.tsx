@@ -297,8 +297,6 @@ function Cube(props: any) {
                     //top: 40
                 }}
                 onPress={() => {
-                    console.log('num ' + numOfCubes)
-                    console.log('length' + vCubeState.length)
                     for (let i = 0; i < vCubeState.length; i++) {
                         //var ex = Math.random() < 0.5 ? -1 : 1;
                         if (i < numOfCubes) {
