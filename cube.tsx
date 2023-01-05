@@ -140,6 +140,10 @@ function Cube(props: any) {
 
     const [numOfCubes, setNumOfCubes] = useState(globalState.count);
 
+    const [glkey, setGLKey] = useState(0);
+
+    const [gl2, setGL2] = useState(0);
+
     const updateCameraPosition = useCallback((field: "x" | "y" | "z", value: number) => {
         if (stateCamera) {
             stateCamera.position[field] = value;
@@ -150,13 +154,19 @@ function Cube(props: any) {
         if (stateCamera) {
             setCamPosition({ x: round(stateCamera.position.x), y: round(stateCamera.position.y), z: round(stateCamera.position.z) })
         }
-        setNumOfCubes(globalState.count)
+        if (numOfCubes != globalState.count) {
+            setNumOfCubes(globalState.count)
+            setGLKey(glkey + 1)
+            onContextCreate(gl2)
+        }
+
         console.log("state" + globalState.count)
-    }, [stateCamera, reload, globalState]);
+    }, [stateCamera, reload]);
 
     // const forceUpdate = React.useCallback(() => updateState({}), [globalState.count]);
 
     const onContextCreate = async (gl: any) => {
+        setGL2(gl)
         const scene = new Scene();
         const camera = createCamera(gl)
 
@@ -297,6 +307,7 @@ function Cube(props: any) {
                     height: "100%",
                     top: 40,
                 }}
+                    key={glkey}
                     onContextCreate={onContextCreate}
                 />
             </Pressable>
