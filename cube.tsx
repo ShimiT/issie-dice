@@ -11,7 +11,7 @@ var getVelocity = (x: number = 0, y: number = 0, z: number = 0) => new CANNON.Ve
 var getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
 const round = (num: number) => (Math.round(num * 100) / 100).toFixed(2);
 
-var numOfCubes, setNumOfCubes, prevNumOfCubes
+var numOfCubes, setNumOfCubes
 
 import {
     Scene,
