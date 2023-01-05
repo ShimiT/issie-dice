@@ -1,7 +1,7 @@
 import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, Pressable } from 'react-native';
 import { Button } from '@react-native-material/core';
 import Cube from '../cube';
-
+import { useGlobalStore } from "react-native-global-store";
 import { useState } from 'react';
 import React from 'react';
 
