@@ -23,10 +23,6 @@ const Home = ({ navigation }: any) => {
       <View style={styles.container}>
         <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/background.png')} >
           <Text>Home page</Text>
-          <Button
-            title="Go to Details"
-            onPress={() => navigation.navigate('Settings')}
-          />
           {boardMode && <Cube onBack={() => setBoardMode(false)} />}
         </ImageBackground>
       </View>
