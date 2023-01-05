@@ -21,7 +21,6 @@ const Home = ({ navigation }) => {
     <Pressable style={{height:"100%",width:"100%"}} onPress={handlePress}>
     <View style={styles.container}>
     <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/background.png')} >
-         <Text>Home page</Text>
           {click?<Cube></Cube>: ""}
       </ImageBackground>
     </View>
