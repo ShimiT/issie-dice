@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 
 const START_POS = new CANNON.Vec3(0, -15, 7);
-const getVelocity = (x:number =0,y:number=0,z:number=0) => new CANNON.Vec3(x, y, y);
+const getVelocity = (x:number =0,y:number=0,z:number=0) => new CANNON.Vec3(x, y, z);
 const getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
 const round = (num:number)=>(Math.round(num * 100) / 100).toFixed(2);
 import {
