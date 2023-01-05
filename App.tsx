@@ -1,5 +1,7 @@
+import { StyleSheet, View, Text, Button, Image, TouchableOpacity} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useState } from 'react';
 const StackNav = createNativeStackNavigator();
 const { Navigator, Screen } = StackNav;
 
@@ -8,16 +10,22 @@ import Settings from './pages/settings'
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Navigator>
-        <Screen
-          name="home"
-          component={Home}
-          options={{
-            title: 'Home'
-          }}
-        ></Screen>
-      </Navigator>
-    </NavigationContainer>
+      <NavigationContainer>
+        <Navigator>
+          <Screen
+              name="home"
+              component={Home}
+              options={{
+                headerRight: () => (
+                <Button
+                  title= 'Settings'
+                  onPress={()=>(true)}
+                />
+                ),
+                title: 'Home'
+              }}
+          ></Screen>
+        </Navigator>
+      </NavigationContainer>
   );
 }
