@@ -6,7 +6,6 @@ const StackNav = createNativeStackNavigator();
 const { Navigator, Screen } = StackNav;
 
 import Home from './pages/Home';
-import Settnigs from './pages/Settings';
 
 export default function App() {
   const [click,setOnlicked]= useState(false)
@@ -19,20 +18,11 @@ export default function App() {
               options={{
                 headerRight: () => (
                 <Button
-                  title= 'Setting'
+                  title= 'Settings'
                   onPress={()=>(true)}
-                  // <Image source={require('./assets/icon.png')} />
-                    // {click?<Settnigs></Settnigs>:""}
                 />
                 ),
                 title: 'Home'
-              }}
-          ></Screen>
-          <Screen
-              name="Settings"
-              component={Settnigs}
-              options={{
-                title: 'Yael'
               }}
           ></Screen>
         </Navigator>
