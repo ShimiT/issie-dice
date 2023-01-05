@@ -12,7 +12,7 @@ export default function App() {
       <Navigator>
         <Screen
           name="home"
-          component={Settings}
+          component={Home}
           options={{
             title: 'Home'
           }}
