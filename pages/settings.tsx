@@ -20,6 +20,9 @@ const styles = StyleSheet.create({
         marginTop: 50,
         color: '#BABABA',
     },
+    flex: {
+        // backgroundColor: '#0000003D'
+    }
 });
 
 const Settings = () => {
@@ -36,7 +39,7 @@ const Settings = () => {
                 style={styles.tinyLogo}
                 source={require('@expo/snack-static/react-native-logo.png')}
             ></Image> */}
-            <Flex>
+            <Flex style={styles.flex}>
                 {<OnOffLayer></OnOffLayer>}
                 {<TimeButtons></TimeButtons>}
             </Flex>
