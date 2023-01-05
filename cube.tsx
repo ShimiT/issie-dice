@@ -38,7 +38,7 @@ function createCamera(gl: ExpoWebGLRenderingContext) {
     //gl.canvas.width = gl.drawingBufferWidth;
     //gl.canvas.height = gl.drawingBufferHeight;
     
-    camera.position.set(1, -15, 17);
+    camera.position.set(0, -15, 17);
     camera.quaternion.x = 0.1;
     camera.quaternion.z = 0.0;
     camera.quaternion.y = 0.0;
@@ -99,7 +99,7 @@ function createVCubes(cubeMaterial : CANNON.Material, numOfCubes : number) : Arr
     for (let i = 1; i <= numOfCubes; i++) {
         var vCube = new Body({
             mass: 10, // kg
-            position: new CANNON.Vec3(i * pos[(i-1)%2] * 5, -16, 7), // m
+            position: new CANNON.Vec3(i * pos[(i-1)%2] * 5 + 2, -16, 7), // m
             shape: cubeShape,
             material: cubeMaterial,
             linearDamping: 0.1,
@@ -282,7 +282,7 @@ function Cube(props: any) {
                             var res = (Math.random() * 12) + 2
                             var angVel = Math.random() * 10
                             const pos = [-1, 1]
-                            vCubeState[i].position = new CANNON.Vec3((i+1) * pos[i%2] * 5, -16, 7)
+                            vCubeState[i].position = new CANNON.Vec3((i+1) * pos[i%2] * 5 + 2, -16, 7)
                             vCubeState[i].velocity = getVelocity(0,3,5);
                             vCubeState[i].angularVelocity = new CANNON.Vec3(angVel,angVel,angVel);
                         }
