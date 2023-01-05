@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Renderer, TextureLoader } from 'expo-three';
-import { GLView } from 'expo-gl';
+import { ExpoWebGLRenderingContext, GLView } from 'expo-gl';
 import CANNON, { Body, Box, Material, Plane, Vec3 } from 'cannon';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
@@ -25,9 +25,119 @@ import {
     MeshPhongMaterial,
     Fog,
 } from "three";
+
+function createCamera(gl: ExpoWebGLRenderingContext) {
+    const camera = new PerspectiveCamera(
+        75,
+        gl.drawingBufferWidth / gl.drawingBufferHeight,
+        0.1,
+        1000
+        );
+
+    gl.canvas.width = gl.drawingBufferWidth;
+    gl.canvas.height = gl.drawingBufferHeight;
+    
+     const pixelStorei = _gl.pixelStorei.bind(_gl)
+      _gl.pixelStorei = function(...args) { 
+        const [parameter] = args switch(parameter) {
+             case _gl.UNPACK_FLIP_Y_WEBGL: return pixelStorei(...args)
+        }
+     }
+    }
+    
+    camera.position.set(1, -7, 10);
+    camera.quaternion.x = 0.4;
+    camera.quaternion.z = 0.1;
+
+    return camera
+}
+
+function createCubes(loader : TextureLoader, numOfCubes : number) {
+    
+    const geometry = new BoxGeometry(1, 1, 1);
+    const cubeMaterials = [
+        new MeshBasicMaterial({
+            // color: 0xff0000,
+            map: loader.load(require('./assets/dice1.svg')),
+            transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
+        }),
+        new MeshBasicMaterial({
+            // color: 0xff0000,
+            map: loader.load(require('./assets/dice2.svg')),
+            transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
+        }),
+        new MeshBasicMaterial({
+            // color: 0xff0000,
+            map: loader.load(require('./assets/dice3.svg')),
+            transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
+        }),
+        new MeshBasicMaterial({
+            // color: 0xff0000,
+            map: loader.load(require('./assets/dice4.svg')),
+            transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
+        }),
+        new MeshBasicMaterial({
+            // color: 0xff0000,
+            map: loader.load(require('./assets/dice5.svg')),
+            transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
+        }),
+        new MeshBasicMaterial({
+            // color: 0xff0000,
+            map: loader.load(require('./assets/dice6.svg')),
+            transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
+    })];
+
+    const cubes = [];
+    for (let i = 0; i < numOfCubes; i++) {
+        const cube = new Mesh(geometry, cubeMaterials);
+        cube.castShadow = true;
+        cubes.push(cube);
+    }
+    
+    return cubes 
+}
+
+function createVCubes(cubeMaterial : CANNON.Material, numOfCubes : number) {
+    const cubeShape = new Box(new CANNON.Vec3(1, 1, 1));
+
+    const vCubes = [];
+    for (let i = 0; i < numOfCubes; i++) {
+        const vCube = new Body({
+            mass: 10, // kg
+            position: START_POS.clone(), // m
+            shape: cubeShape,
+            material: cubeMaterial,
+            linearDamping: 0.1,
+            velocity: getVelocity(0,10,0),
+            angularVelocity: getAngularVelocity(),
+        });
+        vCubes.push(vCube);
+    }
+    
+    return vCubes 
+}
+
+function createLights() {
+    const dirLight = new DirectionalLight(0xffffff);
+    const hemiLight = new HemisphereLight(0xffffff, 0x444444);
+
+    hemiLight.position.set(0, 20, 0);
+    dirLight.position.set(0, -5, 10);
+    dirLight.castShadow = true;
+    dirLight.shadow.camera.top = 20;
+    dirLight.shadow.camera.bottom = - 20;
+    dirLight.shadow.camera.left = - 20;
+    dirLight.shadow.camera.right = 20;
+    //dirLight.shadow.camera.near = 0.1;
+    dirLight.shadow.camera.far = 50;
+
+    return [hemiLight, dirLight]
+}
+
 function Cube(props: any) {
     const [loader] = useState(new TextureLoader())
     const [stateCube, setStateCube] = useState<CANNON.Body>(new Body());
+    const [stateCube2, setStateCube2] = useState<CANNON.Body>(new Body());
     const [stateCamera, setStateCamera] = useState<PerspectiveCamera | undefined>(undefined);
     const [reload, setReload] = useState<number>(0);
     const [camPosition, setCamPosition] = useState<any>({x:0,y:0,z:0});
@@ -45,24 +155,8 @@ function Cube(props: any) {
     }, [stateCamera, reload]);
     
     const onContextCreate = async (gl: any) => {
-        try {
-        // three.js implementation.
         const scene = new Scene();
-        // Camera
-        // *******
-        const camera = new PerspectiveCamera(
-            75,
-            gl.drawingBufferWidth / gl.drawingBufferHeight,
-            0.1,
-            1000
-            );
-            
-            gl.canvas.width = gl.drawingBufferWidth;
-        gl.canvas.height = gl.drawingBufferHeight;
-        
-        camera.position.set(1, -7, 10);
-        camera.quaternion.x = 0.4;
-        camera.quaternion.z = 0.1;
+        const camera = createCamera(gl)
 
         setStateCamera(camera);
 
@@ -71,54 +165,12 @@ function Cube(props: any) {
 
         // set size of buffer to be equal to drawing buffer width
         renderer.setSize(gl.drawingBufferWidth, gl.drawingBufferHeight);
-
-        // create cube
-        // define geometry
-        const geometry = new BoxGeometry(1, 1, 1);
-        var cubeMaterials = [
-            new MeshBasicMaterial({
-                color: 0xff0000,
-                map: loader.load(require('./assets/dice1.svg')),
-                transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
-            }),
-            new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice2.svg')),
-                transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
-            }),
-            new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice3.svg')),
-                transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
-            }),
-            new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice4.svg')),
-                transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
-            }),
-            new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice5.svg')),
-                transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
-            }),
-            new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice6.svg')),
-                transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
-            })];
-
-
-        // new MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8, side: DoubleSide }),
-        // new MeshBasicMaterial({ color: 0x0000ff, transparent: true, opacity: 0.8, side: DoubleSide }),
-        // new MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.8, side: DoubleSide }),
-        // new MeshBasicMaterial({ color: 0xff00ff, transparent: true, opacity: 0.8, side: DoubleSide }),
-        // new MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8, side: DoubleSide })];
-
-        const cube = new Mesh(geometry, cubeMaterials);
-        cube.castShadow = true;
-
+        
+        var cubes = createCubes(loader, 5)
         // add cube to scene
-        scene.add(cube);
+        for (let i = 0; i < cubes.length; i++) {
+            scene.add(cubes[i]);
+        }
 
         scene.background = new Color(0xa0a0a0);
         scene.fog = new Fog(0xa0a0a0, 10, 50);
@@ -132,19 +184,9 @@ function Cube(props: any) {
         const plane = new Mesh(visGround, visGrMatereal);
         plane.receiveShadow = true;
 
-        const hemiLight = new HemisphereLight(0xffffff, 0x444444);
-        hemiLight.position.set(0, 20, 0);
-        scene.add(hemiLight);
+        var [hemiLight, dirLight] = createLights()
 
-        const dirLight = new DirectionalLight(0xffffff);
-        dirLight.position.set(0, -5, 10);
-        dirLight.castShadow = true;
-        dirLight.shadow.camera.top = 20;
-        dirLight.shadow.camera.bottom = - 20;
-        dirLight.shadow.camera.left = - 20;
-        dirLight.shadow.camera.right = 20;
-        //dirLight.shadow.camera.near = 0.1;
-        dirLight.shadow.camera.far = 50;
+        scene.add(hemiLight);
         scene.add(dirLight);
         scene.add(plane);
 
@@ -161,33 +203,27 @@ function Cube(props: any) {
         world.gravity.set(0, 0, -9.82);
         world.broadphase = new CANNON.NaiveBroadphase();
 
-        // Create a groud
+        // Create a ground
         var groundMaterial = new Material("ground");
         var groundShape = new Plane();
         var groundBody = new Body({ mass: 0, material: groundMaterial, shape: groundShape });
         groundBody.position.z = -0.5;
         world.addBody(groundBody);
 
-        // create virtual cube
+        // create virtual cubes
         const cubeMaterial = new CANNON.Material("cube");
-        const cubeShape = new Box(new CANNON.Vec3(1, 1, 1));
-        var vCube = new Body({
-            mass: 10, // kg
-            position: START_POS.clone(), // m
-            shape: cubeShape,
-            material: cubeMaterial,
-            linearDamping: 0.1,
-            velocity: getVelocity(0,10,0),
-            angularVelocity: getAngularVelocity(),
-        });
-
-        setStateCube(vCube);
-
-        world.addBody(vCube);
+        var vCubes = createVCubes(cubeMaterial, 5)
+        
+        for (let i = 0; i < vCubes.length; i++) {
+            setStateCube(vCubes[i]);
+            world.addBody(vCubes[i]);
+        }
 
         // Create contact material behaviour
         var cube_ground_mat = new CANNON.ContactMaterial(groundMaterial, cubeMaterial, { friction: 0.1, restitution: 0.7 });
+        //var cube_ground_mat2 = new CANNON.ContactMaterial(groundMaterial, cubeMaterial2, { friction: 0.1, restitution: 0.7 });
         world.addContactMaterial(cube_ground_mat);
+        //world.addContactMaterial(cube_ground_mat2);
 
 
         const render = () => {
@@ -197,8 +233,10 @@ function Cube(props: any) {
             world.step(1 / 50);
 
             // update opengl cube with virtual cube
-            cube.position.copy(vCube.position as any);
-            cube.quaternion.copy(vCube.quaternion as any);
+            for (let i = 0; i < cubes.length; i++) {
+                cubes[i].position.copy(vCubes[i].position as any);
+                cubes[i].quaternion.copy(vCubes[i].quaternion as any);
+            }
 
             renderer.render(scene, camera);
             gl.endFrameEXP();
@@ -206,10 +244,10 @@ function Cube(props: any) {
 
         // call render
         render();
-        } 
-        catch (error) {
-            console.log("--------"+error)
-        }
+        // } 
+        // catch (error) {
+        //     console.log("--------"+error)
+        // }
     };
 
     return (
@@ -241,9 +279,14 @@ function Cube(props: any) {
                     onPress={() => {
                         var ex = Math.random() < 0.5 ? -1 : 1;
                         var res = (Math.random() * 12)*ex
+                        var ex2 = Math.random() < 0.5 ? -1 : 1;
+                        var res2 = (Math.random() * 12)*ex2
+                        var angVel = Math.random() * 10
+                        var angVel2 = Math.random() * 10
                         stateCube.velocity = getVelocity(res,0,res);
-                        stateCube.angularVelocity = new CANNON.Vec3(Math.random() * 10, Math.random() * 10, Math.random() * 10);
-
+                        stateCube.angularVelocity = new CANNON.Vec3(angVel,angVel,angVel);
+                        stateCube2.velocity = getVelocity(res2,0,res2);
+                        stateCube2.angularVelocity = new CANNON.Vec3(angVel2,angVel2,angVel2);
                     }} >
                 <GLView style={{
                     width: "100%",
