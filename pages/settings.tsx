@@ -35,26 +35,11 @@ const styles = StyleSheet.create({
 const Settings = () => {
     return (
         <View style={styles.container}>
-            {<OnOffLayer></OnOffLayer>}
             {<CubeCounter></CubeCounter>}
+            {<OnOffLayer></OnOffLayer>}
             {<TimeButtons></TimeButtons>}
         </View>
     );
 };
-
-// class Settings extends React.Component {
-//     render() {
-//         const { goBack } = this.props.navigation;
-//         return (
-//             <View>
-//                 <Text>This is the home screen of the app</Text>
-//                 <Button
-//                     onPress={(props) => { this.props.navigation.goBack(null) }}
-//                     title="Go to Brent's profile"
-//                 />
-//             </View>
-//         )
-//     }
-// }
 
 export default Settings;
