@@ -43,8 +43,8 @@ const Settings = () => {
                 style={styles.tinyLogo}
                 source={require('@expo/snack-static/react-native-logo.png')}
             ></Image> */}
-            {<CubeCounter></CubeCounter>}
             {<OnOffLayer></OnOffLayer>}
+            {<CubeCounter></CubeCounter>}
             {<TimeButtons></TimeButtons>}
         </View>
     );

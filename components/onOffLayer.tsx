@@ -8,7 +8,7 @@ const onOffLayer = () => {
 
     return (
         <Box style={styles.container}>
-            <Text color='white' style={styles.text}>Recovery Time</Text>
+            <Text color='#BABABA' style={styles.text}>Recovery Time</Text>
             {/* <Image source={require('../assets/dice1.svg')}></Image> */}
             <OnOffButton></OnOffButton>
         </Box>
@@ -27,7 +27,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#403B41',
     },
     text: {
-        fontSize: 18,
+        fontFamily: 'Poppins',
+        fontSize: 16,
+        fontWeight: 'bold',
         marginRight: 20,
     },
 });
