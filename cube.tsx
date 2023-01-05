@@ -143,10 +143,6 @@ function Cube(props: any) {
 
     [numOfCubes, setNumOfCubes] = useState(globalState.count);
 
-    const [glkey, setGLKey] = useState(0);
-
-    const [gl2, setGL2] = useState(0);
-
     const updateCameraPosition = useCallback((field: "x" | "y" | "z", value: number) => {
         if (stateCamera) {
             stateCamera.position[field] = value;
@@ -164,7 +160,6 @@ function Cube(props: any) {
     useEffect(() => {
         if (numOfCubes != globalState.count) {
             console.log('in oif')
-            prevNumOfCubes = numOfCubes
             setNumOfCubes(globalState.count)
             // setGLKey(glkey + 1)
             // onContextCreate(gl2)
@@ -175,7 +170,6 @@ function Cube(props: any) {
     // const forceUpdate = React.useCallback(() => updateState({}), [globalState.count]);
 
     const onContextCreate = async (gl: any) => {
-        setGL2(gl)
         const scene = new Scene();
         const camera = createCamera(gl)
 
@@ -187,7 +181,6 @@ function Cube(props: any) {
         // set size of buffer to be equal to drawing buffer width
         renderer.setSize(gl.drawingBufferWidth, gl.drawingBufferHeight);
 
-        console.log("create cube with num: " + numOfCubes)
         var cubes = createCubes(loader, numOfCubes)
         // add cube to scene
         for (let i = 0; i < cubes.length; i++) {
@@ -325,7 +318,6 @@ function Cube(props: any) {
                     height: "100%",
                     top: 40,
                 }}
-                    key={glkey}
                     onContextCreate={onContextCreate}
                 />
             </Pressable>

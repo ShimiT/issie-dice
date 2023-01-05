@@ -14,9 +14,6 @@ const Home = ({ navigation }: any) => {
     setBoardMode(true)
   };
 
-  const [numOfCubes, setNumOfCubes] = useState(false);
-
-
   return (
     <Pressable style={{ height: "100%", width: "100%" }} onPress={handlePress}>
       <View style={styles.container}>
