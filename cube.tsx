@@ -103,7 +103,6 @@ function createVCubes(cubeMaterial : CANNON.Material, numOfCubes : number) : Arr
             linearDamping: 0.1,
             velocity: getVelocity(0,10,0),
             angularVelocity: getAngularVelocity(),
-            //quaternion: new CANNON.Quaternion(10, 3, 10, 10)
         });
         vCubes.push(vCube);
     }
