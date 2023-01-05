@@ -1,7 +1,5 @@
-import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from 'react-native';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useState } from 'react';
 
 const StackNav = createNativeStackNavigator();
 const { Navigator, Screen } = StackNav;

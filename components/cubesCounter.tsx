@@ -1,5 +1,5 @@
 import { Box, Text, Button } from '@react-native-material/core';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useState } from 'react';
 
 const styles = StyleSheet.create({
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         // flex: 1,
     },
     button: {
-        width: 40,
+        width: 43,
         height: 30,
         backgroundColor: '#1A191B',
         minWidth: 20,
@@ -31,9 +31,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         display: 'flex',
-        // flexDirection: 'row',
-        // marginLeft: 10,
-        // marginRight: 10,
         color: '#ffffff',
         width: 30,
         height: 30,
@@ -49,6 +46,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontWeight: 'bold',
+        fontSize: 18
     },
 });
 
