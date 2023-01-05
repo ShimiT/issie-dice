@@ -7,7 +7,7 @@ function MyButton({ }) {
 
     return (
         <Button
-            title="Go to Settings"
+            title="Settings"
             onPress={() => navigation.navigate('Settings')}
         />
     );

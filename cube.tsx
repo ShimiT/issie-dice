@@ -6,9 +6,9 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 
 const START_POS = new CANNON.Vec3(0, -15, 7);
-const getVelocity = (x:number =0,y:number=0,z:number=0) => new CANNON.Vec3(0, y, 0);
+const getVelocity = (x: number = 0, y: number = 0, z: number = 0) => new CANNON.Vec3(0, y, 0);
 const getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
-const round = (num:number)=>(Math.round(num * 100) / 100).toFixed(2);
+const round = (num: number) => (Math.round(num * 100) / 100).toFixed(2);
 import {
     Scene,
     Mesh,
@@ -31,17 +31,17 @@ function Cube(props: any) {
     const [stateCube, setStateCube] = useState<any>(undefined);
     const [stateCamera, setStateCamera] = useState<PerspectiveCamera | undefined>(undefined);
     const [reload, setReload] = useState<number>(0);
-    const [camPosition, setCamPosition] = useState<any>({x:0,y:0,z:0});
+    const [camPosition, setCamPosition] = useState<any>({ x: 0, y: 0, z: 0 });
 
-    const updateCameraPosition = useCallback((field:"x" | "y" | "z", value:number)=> {
+    const updateCameraPosition = useCallback((field: "x" | "y" | "z", value: number) => {
         if (stateCamera) {
             stateCamera.position[field] = value;
-            setReload(prev=>prev+1);
+            setReload(prev => prev + 1);
         }
     }, [stateCamera]);
-    useEffect(()=>{
+    useEffect(() => {
         if (stateCamera) {
-            setCamPosition({x:round(stateCamera.position.x), y:round(stateCamera.position.y), z:round(stateCamera.position.z)})
+            setCamPosition({ x: round(stateCamera.position.x), y: round(stateCamera.position.y), z: round(stateCamera.position.z) })
         }
     }, [stateCamera, reload]);
 
@@ -77,33 +77,27 @@ function Cube(props: any) {
         const geometry = new BoxGeometry(1, 1, 1);
         var cubeMaterials = [
             new MeshBasicMaterial({
-                color: 0xff0000,
-                map: loader.load(require('./assets/dice1.svg')),
+                map: loader.load(require('./assets/dice1.png')),
                 transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
             }),
             new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice2.svg')),
+                map: loader.load(require('./assets/dice2.png')),
                 transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
             }),
             new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice3.svg')),
+                map: loader.load(require('./assets/dice3.png')),
                 transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
             }),
             new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice4.svg')),
+                map: loader.load(require('./assets/dice4.png')),
                 transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
             }),
             new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice5.svg')),
+                map: loader.load(require('./assets/dice5.png')),
                 transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
             }),
             new MeshBasicMaterial({
-                // color: 0xff0000,
-                map: loader.load(require('./assets/dice6.svg')),
+                map: loader.load(require('./assets/dice6.png')),
                 transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
             })];
 
@@ -177,7 +171,7 @@ function Cube(props: any) {
             shape: cubeShape,
             material: cubeMaterial,
             linearDamping: 0.1,
-            velocity: getVelocity(0,12),
+            velocity: getVelocity(0, 12),
             angularVelocity: getAngularVelocity(),
         });
 
@@ -234,19 +228,19 @@ function Cube(props: any) {
                 </View>
             </View>
             <Pressable
-                    onPress={() => {
-                        var ex = Math.random() < 0.5 ? -1 : 1;
-                        var res = (Math.random() * 12)*ex
-                        stateCube.velocity = getVelocity(res,res,res);
-                        stateCube.angularVelocity = new CANNON.Vec3(Math.random() * 10, Math.random() * 10, Math.random() * 10);
+                onPress={() => {
+                    var ex = Math.random() < 0.5 ? -1 : 1;
+                    var res = (Math.random() * 12) * ex
+                    stateCube.velocity = getVelocity(res, res, res);
+                    stateCube.angularVelocity = new CANNON.Vec3(Math.random() * 10, Math.random() * 10, Math.random() * 10);
 
-                    }} >
+                }} >
                 <GLView style={{
                     width: window.innerWidth - 40,
                     height: window.innerHeight - 80,
                     top: 40,
                 }}
-                onContextCreate={onContextCreate}
+                    onContextCreate={onContextCreate}
                 />
             </Pressable>
         </View >
