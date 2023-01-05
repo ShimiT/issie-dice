@@ -1,6 +1,6 @@
 import { Box, Text, Button } from '@react-native-material/core';
 import { StyleSheet, View } from 'react-native';
-import { useState } from 'react';
+import React, { useState, Component } from 'react';
 import TimeButtons from '../components/timeButton';
 import CubeCounter from '../components/cubesCounter';
 import OnOffLayer from '../components/onOffLayer';
@@ -30,13 +30,21 @@ const styles = StyleSheet.create({
     buttonCaptionText: {
         fontWeight: 'normal',
     },
+    tinyLogo: {
+        width: 50,
+        height: 50,
+    },
 });
 
 const Settings = () => {
     return (
         <View style={styles.container}>
-            {<OnOffLayer></OnOffLayer>}
+            {/* <Image
+                style={styles.tinyLogo}
+                source={require('@expo/snack-static/react-native-logo.png')}
+            ></Image> */}
             {<CubeCounter></CubeCounter>}
+            {<OnOffLayer></OnOffLayer>}
             {<TimeButtons></TimeButtons>}
         </View>
     );
