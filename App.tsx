@@ -1,7 +1,7 @@
-import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from 'react-native';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { GlobalStoreProvider } from "react-native-global-store";
+
 const StackNav = createNativeStackNavigator();
 const { Navigator, Screen } = StackNav;
 
@@ -23,6 +23,7 @@ const persistedKeys = ["count", "recoveryTime", "recoveryOn", "size"];
 
 
 export default function App() {
+<<<<<<< HEAD
     return (
         <GlobalStoreProvider
             initialState={initialState}
@@ -45,3 +46,27 @@ export default function App() {
         </GlobalStoreProvider>
     );
 }
+=======
+  return (
+      <GlobalStoreProvider
+          initialState={initialState}
+          persistedKeys={persistedKeys}
+      ><NavigationContainer>
+              <Navigator>
+                  <Stack.Screen
+                      name="home"
+                      component={Home}
+                      options={{
+                          headerRight: () => (
+                            <SettingsButton></SettingsButton>
+                          ),
+                          title: 'Issie-Dice'
+                      }}
+                  ></Stack.Screen>
+                  <Stack.Screen name="Settings" component={Settings} />
+              </Navigator>
+          </NavigationContainer>
+      </GlobalStoreProvider>
+  );
+}
+>>>>>>> ee816b5c9d02193f14392c982e45592b9ed1a6d4

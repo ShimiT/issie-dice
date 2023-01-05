@@ -1,10 +1,8 @@
-import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, Pressable } from 'react-native';
+import { ImageBackground, View, StyleSheet, Pressable } from 'react-native';
 import { Button } from '@react-native-material/core';
 import Cube from '../cube';
 import { useState } from 'react';
 import React from 'react';
-
-
 
 const Home = ({ navigation }: any) => {
   const [boardMode, setBoardMode] = useState(false)
@@ -23,8 +21,12 @@ const Home = ({ navigation }: any) => {
     <Pressable style={{ height: "100%", width: "100%" }} onPress={handlePress}>
       <View style={styles.container}>
         <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/logo.svg')} >
+<<<<<<< HEAD
           {/* <Text>Home page</Text> */}
           {boardMode && <Cube setNumOfCubes={setNumOfCubes} />}
+=======
+          {boardMode && <Cube onBack={() => setBoardMode(false)} />}
+>>>>>>> ee816b5c9d02193f14392c982e45592b9ed1a6d4
         </ImageBackground>
       </View>
     </Pressable>
@@ -123,7 +125,7 @@ const Home = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
+    backgroundColor: '#333034',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -137,9 +139,10 @@ const styles = StyleSheet.create({
     maxWidth: 150,
   },
   image: {
-    flex: 1,
+    resizeMode: "center",
+    // flex: 1,
     width: '100%',
-    height: '100%',
+    height: '90%',
     justifyContent: "center"
   },
   button: {

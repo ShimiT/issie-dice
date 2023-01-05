@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#0000003D',
     },
     text: {
-        fontFamily: 'Poppins',
         fontSize: 16,
         fontWeight: 'bold',
         marginRight: 20,
