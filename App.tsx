@@ -1,7 +1,7 @@
-import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from 'react-native';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { GlobalStoreProvider } from "react-native-global-store";
+
 const StackNav = createNativeStackNavigator();
 const { Navigator, Screen } = StackNav;
 
