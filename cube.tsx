@@ -286,8 +286,9 @@ function Cube(props: any) {
             </View> */}
             <Pressable
                 style={{
-                    width: window.innerWidth - 80,
-                    height: window.innerHeight - 40,
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    justifyContent: 'center'
                     //paddingBottom: 150,
                     //top: 40
                 }}
@@ -309,7 +310,7 @@ function Cube(props: any) {
                 <GLView style={{
                     width: "100%",
                     height: "100%",
-                    top: 40,
+                    // top: 40,
                 }}
                     onContextCreate={onContextCreate}
                 />
@@ -320,7 +321,9 @@ function Cube(props: any) {
 const styles = StyleSheet.create({
     main: {
         flex: 1,
-        alignItems: "center"
+        justifyContent: 'center',
+        height: '100%',
+        width: '100%',
     },
     slidersWrapper: {
         flex: 1,

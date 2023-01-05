@@ -3,6 +3,7 @@ import { Button } from '@react-native-material/core';
 import Cube from '../cube';
 import { useState } from 'react';
 import React from 'react';
+// import { useNavigation } from '@react-navigation/native';
 
 const Home = ({ navigation }: any) => {
   const [boardMode, setBoardMode] = useState(false)
