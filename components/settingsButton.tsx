@@ -8,7 +8,7 @@ function MyButton({ }) {
 
     return (
         <MdSettings
-            title="Settings" 
+            title="Settings"
             onClick={() => navigation.navigate('Settings')}
             size={30}
         />

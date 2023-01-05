@@ -4,12 +4,13 @@ import { ExpoWebGLRenderingContext, GLView } from 'expo-gl';
 import CANNON, { Body, Box, Material, Plane, Vec3 } from 'cannon';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
+import { useGlobalStore } from "react-native-global-store";
 
 const START_POS = new CANNON.Vec3(0, -15, 7);
-var getVelocity = (x:number =0,y:number=0,z:number=0) => new CANNON.Vec3(x, y, z);
+var getVelocity = (x: number = 0, y: number = 0, z: number = 0) => new CANNON.Vec3(x, y, z);
 var getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
-const round = (num:number)=>(Math.round(num * 100) / 100).toFixed(2);
-const numOfCubes = 3
+const round = (num: number) => (Math.round(num * 100) / 100).toFixed(2);
+
 import {
     Scene,
     Mesh,
@@ -33,11 +34,11 @@ function createCamera(gl: ExpoWebGLRenderingContext) {
         gl.drawingBufferWidth / gl.drawingBufferHeight,
         0.1,
         1000
-        );
+    );
 
     gl.canvas.width = gl.drawingBufferWidth;
     gl.canvas.height = gl.drawingBufferHeight;
-    
+
     camera.position.set(1, -15, 10);
     camera.quaternion.x = 0.4;
     camera.quaternion.z = 0.1;
@@ -45,8 +46,8 @@ function createCamera(gl: ExpoWebGLRenderingContext) {
     return camera
 }
 
-function createCubes(loader : TextureLoader, numOfCubes : number) {
-    
+function createCubes(loader: TextureLoader, numOfCubes: number) {
+
     const geometry = new BoxGeometry(1, 1, 1);
     const cubeMaterials = [
         new MeshBasicMaterial({
@@ -78,19 +79,21 @@ function createCubes(loader : TextureLoader, numOfCubes : number) {
             // color: 0xff0000,
             map: loader.load(require('./assets/dice6.png')),
             transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
-    })];
+        })];
+
 
     const cubes = [];
+
     for (let i = 1; i <= numOfCubes; i++) {
         var cube = new Mesh(geometry, cubeMaterials);
         cube.castShadow = true;
         cubes.push(cube);
     }
-    
-    return cubes 
+
+    return cubes
 }
 
-function createVCubes(cubeMaterial : CANNON.Material, numOfCubes : number) : Array<CANNON.Body> {
+function createVCubes(cubeMaterial: CANNON.Material, numOfCubes: number): Array<CANNON.Body> {
     const cubeShape = new Box(new CANNON.Vec3(1, 1, 1));
 
     const vCubes = [];
@@ -101,14 +104,14 @@ function createVCubes(cubeMaterial : CANNON.Material, numOfCubes : number) : Arr
             shape: cubeShape,
             material: cubeMaterial,
             linearDamping: 0.1,
-            velocity: getVelocity(0,10,0),
+            velocity: getVelocity(0, 10, 0),
             angularVelocity: getAngularVelocity(),
             //quaternion: new CANNON.Quaternion(10, 3, 10, 10)
         });
         vCubes.push(vCube);
     }
-    
-    return vCubes 
+
+    return vCubes
 }
 
 function createLights() {
@@ -133,8 +136,14 @@ function Cube(props: any) {
     const [vCubeState, setStateCubes] = useState<CANNON.Body[]>([])
     const [stateCamera, setStateCamera] = useState<PerspectiveCamera | undefined>(undefined);
     const [reload, setReload] = useState<number>(0);
-    const [camPosition, setCamPosition] = useState<any>({x:0,y:0,z:0});
-    
+    const [camPosition, setCamPosition] = useState<any>({ x: 0, y: 0, z: 0 });
+    const [globalState, setGlobalState] = useGlobalStore();
+
+    const [numOfCubes, setNumOfCubes] = useState(globalState.count);
+
+    const [, updateState] = React.useState();
+
+
 
     const updateCameraPosition = useCallback((field: "x" | "y" | "z", value: number) => {
         if (stateCamera) {
@@ -143,11 +152,19 @@ function Cube(props: any) {
         }
     }, [stateCamera]);
     useEffect(() => {
+        setNumOfCubes(globalState.count)
         if (stateCamera) {
             setCamPosition({ x: round(stateCamera.position.x), y: round(stateCamera.position.y), z: round(stateCamera.position.z) })
         }
-    }, [stateCamera, reload]);
-    
+        if (numOfCubes != globalState.count) {
+            window.location.reload(true);
+        }
+        props.setNumOfCubes(true)
+        console.log("state" + globalState.count)
+    }, [stateCamera, reload, globalState]);
+
+    const forceUpdate = React.useCallback(() => updateState({}), [globalState.count]);
+
     const onContextCreate = async (gl: any) => {
         const scene = new Scene();
         const camera = createCamera(gl)
@@ -159,7 +176,7 @@ function Cube(props: any) {
 
         // set size of buffer to be equal to drawing buffer width
         renderer.setSize(gl.drawingBufferWidth, gl.drawingBufferHeight);
-        
+
         var cubes = createCubes(loader, numOfCubes)
         // add cube to scene
         for (let i = 0; i < cubes.length; i++) {
@@ -207,11 +224,11 @@ function Cube(props: any) {
         // create virtual cubes
         const cubeMaterial = new CANNON.Material("cube");
         var vCubes = createVCubes(cubeMaterial, numOfCubes)
-        
+
         for (let i = 0; i < vCubes.length; i++) {
             world.addBody(vCubes[i]);
         }
-        
+
         setStateCubes(vCubes);
 
         // Create contact material behaviour
@@ -223,14 +240,14 @@ function Cube(props: any) {
         var ss = 1
         const render = () => {
             requestAnimationFrame(render);
-            
+
             // progress in the "world"
             world.step(1 / renderStep);
             ss++
             if (ss == 15) {
                 renderStep = 25
             }
-            
+
             // update opengl cube with virtual cube
             for (let i = 0; i < vCubes.length; i++) {
                 cubes[i].position.copy(vCubes[i].position as any);
@@ -238,7 +255,7 @@ function Cube(props: any) {
             }
 
             renderer.render(scene, camera);
-            
+
             gl.endFrameEXP();
         };
 
@@ -275,19 +292,20 @@ function Cube(props: any) {
                 </View>
             </View>
             <Pressable
-                    style={{                    
-                        width: window.innerWidth - 40,
-                        height: window.innerHeight - 80,
-                        top: 40,}}
-                    onPress={() => {
-                        for (let i = 0; i < vCubeState.length; i++) {
-                            var ex = Math.random() < 0.5 ? -1 : 1;
-                            var res = (Math.random() * 12)*ex
-                            var angVel = Math.random() * 10
-                            vCubeState[i].velocity = getVelocity(res,0,res);
-                            vCubeState[i].angularVelocity = new CANNON.Vec3(angVel,angVel,angVel);
-                        }
-                    }} >
+                style={{
+                    width: window.innerWidth - 40,
+                    height: window.innerHeight - 80,
+                    top: 40,
+                }}
+                onPress={() => {
+                    for (let i = 0; i < vCubeState.length; i++) {
+                        var ex = Math.random() < 0.5 ? -1 : 1;
+                        var res = (Math.random() * 12) * ex
+                        var angVel = Math.random() * 10
+                        vCubeState[i].velocity = getVelocity(res, 0, res);
+                        vCubeState[i].angularVelocity = new CANNON.Vec3(angVel, angVel, angVel);
+                    }
+                }} >
                 <GLView style={{
                     width: "100%",
                     height: "100%",

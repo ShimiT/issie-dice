@@ -16,13 +16,15 @@ const Home = ({ navigation }: any) => {
     setBoardMode(true)
   };
 
+  const [numOfCubes, setNumOfCubes] = useState(false);
+
 
   return (
     <Pressable style={{ height: "100%", width: "100%" }} onPress={handlePress}>
       <View style={styles.container}>
         <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/logo.svg')} >
           {/* <Text>Home page</Text> */}
-          {boardMode && <Cube/>}
+          {boardMode && <Cube setNumOfCubes={setNumOfCubes} />}
         </ImageBackground>
       </View>
     </Pressable>
