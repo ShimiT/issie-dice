@@ -31,7 +31,8 @@ const Settings = () => {
             <Text style={styles.text}> Design Your Game</Text>
             <Flex style={{ alignItems: 'center' }}>
                 <Flex>
-                    {<OnOffLayer></OnOffLayer>}
+                    <Text style={styles.text}> Num of Cubes</Text>
+                    {<CubeCounter></CubeCounter>}
                 </Flex>
             </Flex>
             {/* <Image
@@ -39,8 +40,7 @@ const Settings = () => {
                 source={require('@expo/snack-static/react-native-logo.png')}
             ></Image> */}
             <Flex style={{ alignItems: 'center' }}>
-                <Text style={styles.text}> Num of Cubes</Text>
-                {<CubeCounter></CubeCounter>}
+                {<OnOffLayer></OnOffLayer>}
                 {<TimeButtons></TimeButtons>}
             </Flex>
         </View>
