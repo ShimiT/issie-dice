@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Renderer, TextureLoader } from 'expo-three';
 import { ExpoWebGLRenderingContext, GLView } from 'expo-gl';
 import CANNON, { Body, Box, Material, Plane, Vec3 } from 'cannon';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ShadowPropTypesIOS, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useGlobalStore } from "react-native-global-store";
 
@@ -10,6 +10,7 @@ const START_POS = new CANNON.Vec3(0, -15, 7);
 var getVelocity = (x: number = 0, y: number = 0, z: number = 0) => new CANNON.Vec3(x, y, z);
 var getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
 const round = (num: number) => (Math.round(num * 100) / 100).toFixed(2);
+var world, vCubes, camera,cubes, scene,renderer, numOfCubes, setNumOfCubes,cubeMaterial, prevNumOfCubes
 
 import {
     Scene,
@@ -131,19 +132,62 @@ function createLights() {
     return [hemiLight, dirLight]
 }
 
+function renderItMyMan(world, vCubes, camera,gl, cubes, scene,renderer) {
+   
+    //cubes = createCubes(loader, numOfCubes)
+        // add cube to scene
+        for (let i = 0; i < cubes.length; i++) {
+            scene.add(cubes[i]);
+        }
+
+        world2 = new CANNON.World();
+        world2.gravity = world.gravity
+        world2.broadphase = world.broadphase
+        world2.addBody(groundBody);
+
+
+        vCubes = createVCubes(cubeMaterial, numOfCubes)
+
+        for (let i = 0; i < vCubes.length; i++) {
+            world.addBody(vCubes[i]);
+        }
+
+        //setStateCubes(vCubes);
+    const render = () => {
+        requestAnimationFrame(render);
+
+        // progress in the "world"
+        world.step(1 / 30);
+
+
+        // update opengl cube with virtual cube
+        for (let i = 0; i < vCubes.length; i++) {
+            cubes[i].position.copy(vCubes[i].position as any);
+            cubes[i].quaternion.copy(vCubes[i].quaternion as any);
+        }
+
+        renderer.render(scene, camera);
+
+        gl.endFrameEXP();
+        
+    };
+    render();
+
+}
+
 function Cube(props: any) {
     const [loader] = useState(new TextureLoader())
-    const [vCubeState, setStateCubes] = useState<CANNON.Body[]>([])
+    var [vCubeState, setStateCubes] = useState<CANNON.Body[]>([])
     const [stateCamera, setStateCamera] = useState<PerspectiveCamera | undefined>(undefined);
     const [reload, setReload] = useState<number>(0);
     const [camPosition, setCamPosition] = useState<any>({ x: 0, y: 0, z: 0 });
     const [globalState, setGlobalState] = useGlobalStore();
-
-    const [numOfCubes, setNumOfCubes] = useState(globalState.count);
+    const [gl2, setGL2] = useState(0);
+    [numOfCubes, setNumOfCubes] = useState(globalState.count);
 
     const [glkey, setGLKey] = useState(0);
 
-    const [gl2, setGL2] = useState(0);
+    
 
     const updateCameraPosition = useCallback((field: "x" | "y" | "z", value: number) => {
         if (stateCamera) {
@@ -160,8 +204,10 @@ function Cube(props: any) {
     }, [stateCamera, reload]);
 
     useEffect(() => {
+        console.log(globalState.count)
         if (numOfCubes != globalState.count) {
             console.log('in oif')
+            prevNumOfCubes = numOfCubes
             setNumOfCubes(globalState.count)
             // setGLKey(glkey + 1)
             // onContextCreate(gl2)
@@ -173,21 +219,21 @@ function Cube(props: any) {
 
     const onContextCreate = async (gl: any) => {
         setGL2(gl)
-        const scene = new Scene();
-        const camera = createCamera(gl)
+        scene = new Scene();
+        camera = createCamera(gl)
 
         setStateCamera(camera);
 
-        const renderer = new Renderer({ gl });
+         renderer = new Renderer({ gl });
         renderer.shadowMap.enabled = true;
 
         // set size of buffer to be equal to drawing buffer width
         renderer.setSize(gl.drawingBufferWidth, gl.drawingBufferHeight);
 
         console.log("create cube with num: " + numOfCubes)
-        var cubes = createCubes(loader, numOfCubes)
+        cubes = createCubes(loader, numOfCubes)
         // add cube to scene
-        for (let i = 0; i < cubes.length; i++) {
+        for (let i = 0; i < numOfCubes; i++) {
             scene.add(cubes[i]);
         }
 
@@ -218,22 +264,22 @@ function Cube(props: any) {
         // ****** virtual world for gravity and movement
         // Add virtual world with gravity
 
-        const world = new CANNON.World();
+         world = new CANNON.World();
         world.gravity.set(0, 0, -9.82);
         world.broadphase = new CANNON.NaiveBroadphase();
 
         // Create a ground
         var groundMaterial = new Material("ground");
         var groundShape = new Plane();
-        var groundBody = new Body({ mass: 0, material: groundMaterial, shape: groundShape });
+        groundBody = new Body({ mass: 0, material: groundMaterial, shape: groundShape });
         groundBody.position.z = -0.5;
         world.addBody(groundBody);
 
         // create virtual cubes
-        const cubeMaterial = new CANNON.Material("cube");
-        var vCubes = createVCubes(cubeMaterial, numOfCubes)
+         cubeMaterial = new CANNON.Material("cube");
+         vCubes = createVCubes(cubeMaterial, numOfCubes)
 
-        for (let i = 0; i < vCubes.length; i++) {
+        for (let i = 0; i < numOfCubes; i++) {
             world.addBody(vCubes[i]);
         }
 
@@ -243,26 +289,10 @@ function Cube(props: any) {
         var cube_ground_mat = new CANNON.ContactMaterial(groundMaterial, cubeMaterial, { friction: 0.1, restitution: 0.7 });
         world.addContactMaterial(cube_ground_mat);
 
-        const render = () => {
-            requestAnimationFrame(render);
-
-            // progress in the "world"
-            world.step(1 / 30);
-
-
-            // update opengl cube with virtual cube
-            for (let i = 0; i < vCubes.length; i++) {
-                cubes[i].position.copy(vCubes[i].position as any);
-                cubes[i].quaternion.copy(vCubes[i].quaternion as any);
-            }
-
-            renderer.render(scene, camera);
-
-            gl.endFrameEXP();
-        };
+        renderItMyMan(world, vCubes, camera,gl,cubes, scene,renderer)
 
         // call render
-        render();
+        
         console.log(vCubes[0])
         console.log(vCubes[1])
         console.log(vCubes[2])
@@ -300,23 +330,40 @@ function Cube(props: any) {
                     //paddingBottom: 150,
                     //top: 40
                 }}
+                
                 onPress={() => {
-                    for (let i = 0; i < vCubeState.length; i++) {
+                    for (let i = 0; i < numOfCubes; i++) {
                         //var ex = Math.random() < 0.5 ? -1 : 1;
                         var res = (Math.random() * 12) + 2
                         var angVel = Math.random() * 10
                         const pos = [-1, 1]
-                        vCubeState[i].position = new CANNON.Vec3((i + 1) * pos[i % 2] * 5, -16, 7)
-                        vCubeState[i].velocity = getVelocity(0, 3, 5);
-                        vCubeState[i].angularVelocity = new CANNON.Vec3(angVel, angVel, angVel);
+                        vCubes[i].position = new CANNON.Vec3((i + 1) * pos[i % 2] * 5, -16, 7)
+                        vCubes[i].velocity = getVelocity(0, 3, 5);
+                        vCubes[i].angularVelocity = new CANNON.Vec3(angVel, angVel, angVel);
+                        
                     }
+                    if (prevNumOfCubes > numOfCubes) {
+                        for (let i = prevNumOfCubes - 1; i >= numOfCubes; i--) {
+
+                            console.log(vCubes[i].position)
+                            console.log(prevNumOfCubes)
+                            console.log(numOfCubes)
+                            console.log('ssss')
+                            vCubes[i].position = new CANNON.Vec3(-100, -100, -100)
+                        }
+                    }
+                    setStateCubes(vCubeState);
+
+                    cubeMaterial = new CANNON.Material("cube");
+                    vCubes = createVCubes(cubeMaterial, numOfCubes)
+
+                    renderItMyMan(world, vCubes, camera,gl2,cubes, scene,renderer)
                 }} >
                 <GLView style={{
                     width: "100%",
                     height: "100%",
                     top: 40,
                 }}
-                    key={glkey}
                     onContextCreate={onContextCreate}
                 />
             </Pressable>
