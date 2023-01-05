@@ -88,7 +88,7 @@ function Cube(props: any) {
         const geometry = new BoxGeometry(1, 1, 1);
         var cubeMaterials = [
             new MeshBasicMaterial({
-                color: 0xff0000,
+                //color: 0xff0000,
                 //map: loader.load(require('./splash.png')),
                 //transparent: true, opacity: 0.8, side: DoubleSide
                 map: loader.load(require('./assets/dice1.svg')),
@@ -227,21 +227,30 @@ function Cube(props: any) {
     console.log(vec)
     return (
         <View style={styles.main}>
+            {/* <Pressable
+        style={styles.button}
+        onPress={() => {
+            stateCube.position = START_POS.clone();
+            stateCube.velocity = getVelocity();
+            stateCube.angularVelocity = new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
 
-            <View style={styles.slidersWrapper}>
-                {/* <Pressable
-                    style={styles.button}
-                    onPress={() => {
-                        stateCube.position = START_POS.clone();
-                        stateCube.velocity = getVelocity();
-                        stateCube.angularVelocity = new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
-
-                    }} >Rethrow
-                </Pressable>*/}
-                <Pressable
-                    style={styles.button}
-                    onPress={() => props.onBack()} >Back
+        }} >Rethrow
+    </Pressable>*/}
+            <Pressable
+                style={styles.button}
+                onPress={() => props.onBack()}>Back
+            </Pressable>
+            <View>
+                <Pressable>
+                    <GLView style={{
+                        width: window.innerWidth - 40,
+                        height: window.innerHeight - 80,
+                        top: 40
+                    }}
+                        onContextCreate={onContextCreate} />
                 </Pressable>
+            </View>
+            <View style={styles.slidersWrapper}>
                 <View style={styles.sliderWrapper}>
                     <Text>X : {camPosition.x}</Text><Slider style={styles.slider} minimumValue={-10} maximumValue={10}
                         value={stateCamera?.position.x}
@@ -249,25 +258,15 @@ function Cube(props: any) {
                 </View>
                 <View style={styles.sliderWrapper}>
                     <Text>Y: {camPosition.y}</Text><Slider style={styles.slider} minimumValue={-10} maximumValue={10}
-                        onValueChange={(value) => updateCameraPosition("y", value)}
                         value={stateCamera?.position.y}
-                    />
+                        onValueChange={(value) => updateCameraPosition("y", value)} />
                 </View>
                 <View style={styles.sliderWrapper}>
-                    <Text>Z: {camPosition.z}</Text><Slider style={styles.slider} minimumValue={0} maximumValue={30}
-                        onValueChange={(value) => updateCameraPosition("z", value)}
-                        
+                    <Text>Z: {camPosition.z}</Text><Slider style={styles.slider} minimumValue={0} maximumValue={15}
                         value={stateCamera?.position.z}
-                    />
+                        onValueChange={(value) => updateCameraPosition("z", value)} />
                 </View>
             </View>
-            <GLView style={{
-                width: window.innerWidth - 40,
-                height: window.innerHeight - 80,
-                top: 40,
-            }}
-                onContextCreate={onContextCreate}
-            />
         </View >
     )
     
