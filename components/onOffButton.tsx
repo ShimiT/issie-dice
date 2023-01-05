@@ -28,20 +28,21 @@ const onOffButton = () => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#1A191B',
-        flex: 1,
+        // flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 15,
         paddingVertical: 5,
         borderRadius: 15,
+        alignContent: 'center',
     },
     switch: {
         transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
     },
     text: {
         fontSize: 18,
-        marginRight: 20,
+        // marginRight: 20,
     },
 });
 
