@@ -1,5 +1,7 @@
+import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useState } from 'react';
 const StackNav = createNativeStackNavigator();
 const { Navigator, Screen } = StackNav;
 
@@ -16,6 +18,12 @@ export default function App() {
           name="home"
           component={Home}
           options={{
+            headerRight: () => (
+              <Button
+                title='Settings'
+                onPress={() => (true)}
+              />
+            ),
             title: 'Home'
           }}
         ></Stack.Screen>
