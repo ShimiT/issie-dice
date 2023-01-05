@@ -28,7 +28,7 @@ import {
 function Cube(props: any) {
 
     const [loader] = useState(new TextureLoader())
-    const [stateCube, setStateCube] = useState<any>(undefined);
+    const [stateCube, setStateCube] = useState<any>({});
     const [stateCamera, setStateCamera] = useState<PerspectiveCamera | undefined>(undefined);
     const [reload, setReload] = useState<number>(0);
     const [camPosition, setCamPosition] = useState<any>({x:0,y:0,z:0});
