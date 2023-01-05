@@ -33,13 +33,13 @@ export default function App() {
                       name="home"
                       component={Home}
                       options={{
-            headerRight: () => (
-              <SettingsButton></SettingsButton>
-            ),
+                          headerRight: () => (
+                            <SettingsButton></SettingsButton>
+                          ),
                           title: 'Issie-Dice'
                       }}
                   ></Stack.Screen>
-        <Stack.Screen name="Settings" component={Settings} />
+                  <Stack.Screen name="Settings" component={Settings} />
               </Navigator>
           </NavigationContainer>
       </GlobalStoreProvider>
