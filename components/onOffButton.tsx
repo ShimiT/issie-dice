@@ -2,10 +2,18 @@ import { Box, Text, Button } from '@react-native-material/core';
 import { View, StyleSheet } from "react-native";
 import { Switch } from 'react-native-switch';
 import React, { useState } from 'react';
+import { useGlobalStore } from "react-native-global-store";
 
 const onOffButton = () => {
     const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const [globalState,setGlobalState] = useGlobalStore();
+
+    function setRecoveryOn() {
+        setIsEnabled(globalState.recoveryOn)
+        setGlobalState({
+            recoveryOn: Boolean(!isEnabled)
+        });
+    }
 
     return (
         <View style={styles.container}>
@@ -16,8 +24,8 @@ const onOffButton = () => {
                 // thumbColor="#fff"
                 // thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
                 // ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitch}
-                value={isEnabled}
+                onValueChange={() => setRecoveryOn()}
+                value={globalState.recoveryOn}
                 activeText={'On'}
                 inActiveText={'Off'}
             />
