@@ -14,14 +14,23 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
-        // marginTop: 100,
+        height: '100%'
     },
     text: {
-        marginTop: 50,
+        marginTop: 100,
         color: '#BABABA',
     },
+    cubeCounter: {
+        marginTop: 100,
+        color: '#BABABA',
+    },
+    recoveryTime: {
+        marginBottom: 300,
+        color: '#BABABA',
+        alignItems: 'center'
+    },
     flex: {
-        // backgroundColor: '#0000003D'
+        backgroundColor: '#0000003D'
     }
 });
 
@@ -31,7 +40,7 @@ const Settings = () => {
             <Text style={styles.text}> Design Your Game</Text>
             <Flex style={{ alignItems: 'center' }}>
                 <Flex>
-                    <Text style={styles.text}> Num of Cubes</Text>
+                    <Text style={styles.cubeCounter}> Num of Cubes</Text>
                     {<CubeCounter></CubeCounter>}
                 </Flex>
             </Flex>
@@ -39,7 +48,7 @@ const Settings = () => {
                 style={styles.tinyLogo}
                 source={require('@expo/snack-static/react-native-logo.png')}
             ></Image> */}
-            <Flex style={{ alignItems: 'center' }}>
+            <Flex style={styles.recoveryTime}>
                 {<OnOffLayer></OnOffLayer>}
                 {<TimeButtons></TimeButtons>}
             </Flex>
