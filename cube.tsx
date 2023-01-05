@@ -26,9 +26,8 @@ import {
     Fog,
 } from "three";
 function Cube(props: any) {
-
     const [loader] = useState(new TextureLoader())
-    const [stateCube, setStateCube] = useState<any>(new Body());
+    const [stateCube, setStateCube] = useState<CANNON.Body>(new Body());
     const [stateCamera, setStateCamera] = useState<PerspectiveCamera | undefined>(undefined);
     const [reload, setReload] = useState<number>(0);
     const [camPosition, setCamPosition] = useState<any>({x:0,y:0,z:0});
@@ -44,8 +43,9 @@ function Cube(props: any) {
             setCamPosition({x:round(stateCamera.position.x), y:round(stateCamera.position.y), z:round(stateCamera.position.z)})
         }
     }, [stateCamera, reload]);
-
+    
     const onContextCreate = async (gl: any) => {
+        try {
         // three.js implementation.
         const scene = new Scene();
         // Camera
@@ -55,11 +55,11 @@ function Cube(props: any) {
             gl.drawingBufferWidth / gl.drawingBufferHeight,
             0.1,
             1000
-        );
-
-        gl.canvas.width = gl.drawingBufferWidth;
+            );
+            
+            gl.canvas.width = gl.drawingBufferWidth;
         gl.canvas.height = gl.drawingBufferHeight;
-
+        
         camera.position.set(1, -7, 10);
         camera.quaternion.x = 0.4;
         camera.quaternion.z = 0.1;
@@ -206,6 +206,10 @@ function Cube(props: any) {
 
         // call render
         render();
+        } 
+        catch (error) {
+            console.log("--------"+error)
+        }
     };
 
     return (
