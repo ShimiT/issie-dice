@@ -28,7 +28,7 @@ import {
 function Cube(props: any) {
 
     const [loader] = useState(new TextureLoader())
-    const [stateCube, setStateCube] = useState<any>({});
+    const [stateCube, setStateCube] = useState<any>(new Body());
     const [stateCamera, setStateCamera] = useState<PerspectiveCamera | undefined>(undefined);
     const [reload, setReload] = useState<number>(0);
     const [camPosition, setCamPosition] = useState<any>({x:0,y:0,z:0});
@@ -194,7 +194,7 @@ function Cube(props: any) {
             requestAnimationFrame(render);
 
             // // progress in the "world"
-            world.step(1 / 45);
+            world.step(1 / 50);
 
             // update opengl cube with virtual cube
             cube.position.copy(vCube.position as any);
@@ -230,6 +230,10 @@ function Cube(props: any) {
                 </View>
             </View>
             <Pressable
+                    style={{                    
+                        width: window.innerWidth - 40,
+                        height: window.innerHeight - 80,
+                        top: 40,}}
                     onPress={() => {
                         var ex = Math.random() < 0.5 ? -1 : 1;
                         var res = (Math.random() * 12)*ex
@@ -238,8 +242,8 @@ function Cube(props: any) {
 
                     }} >
                 <GLView style={{
-                    width: window.innerWidth - 40,
-                    height: window.innerHeight - 80,
+                    width: "100%",
+                    height: "100%",
                     top: 40,
                 }}
                 onContextCreate={onContextCreate}
