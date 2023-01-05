@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 
 const START_POS = new CANNON.Vec3(0, -15, 7);
-const getVelocity = () => new CANNON.Vec3(0, 12, 0);
+const getVelocity = (x:number =0,y:number=0,z:number=0) => new CANNON.Vec3(0, y, 0);
 const getAngularVelocity = () => new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
 const round = (num:number)=>(Math.round(num * 100) / 100).toFixed(2);
 import {
@@ -39,7 +39,6 @@ function Cube(props: any) {
             setReload(prev=>prev+1);
         }
     }, [stateCamera]);
-
     useEffect(()=>{
         if (stateCamera) {
             setCamPosition({x:round(stateCamera.position.x), y:round(stateCamera.position.y), z:round(stateCamera.position.z)})
@@ -178,7 +177,7 @@ function Cube(props: any) {
             shape: cubeShape,
             material: cubeMaterial,
             linearDamping: 0.1,
-            velocity: getVelocity(),
+            velocity: getVelocity(0,12),
             angularVelocity: getAngularVelocity(),
         });
 
@@ -211,17 +210,7 @@ function Cube(props: any) {
 
     return (
         <View style={styles.main}>
-
             <View style={styles.slidersWrapper}>
-                <Pressable
-                    style={styles.button}
-                    onPress={() => {
-                        stateCube.position = START_POS.clone();
-                        stateCube.velocity = getVelocity();
-                        stateCube.angularVelocity = new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
-
-                    }} >Rethrow
-                </Pressable>
                 <Pressable
                     style={styles.button}
                     onPress={() => props.onBack()} >Back
@@ -240,18 +229,27 @@ function Cube(props: any) {
                 <View style={styles.sliderWrapper}>
                     <Text>Z: {camPosition.z}</Text><Slider style={styles.slider} minimumValue={0} maximumValue={30}
                         onValueChange={(value) => updateCameraPosition("z", value)}
-                        
                         value={stateCamera?.position.z}
                     />
                 </View>
             </View>
-            <GLView style={{
-                width: window.innerWidth - 40,
-                height: window.innerHeight - 80,
-                top: 40,
-            }}
+            <Pressable
+                    style={styles.button}
+                    onPress={() => {
+                        var ex = Math.random() < 0.5 ? -1 : 1;
+                        var res = (Math.random() * 12)*ex
+                        stateCube.velocity = getVelocity(res,res,res);
+                        stateCube.angularVelocity = new CANNON.Vec3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
+
+                    }} >
+                <GLView style={{
+                    width: window.innerWidth - 40,
+                    height: window.innerHeight - 80,
+                    top: 40,
+                }}
                 onContextCreate={onContextCreate}
-            />
+                />
+            </Pressable>
         </View >
     )
 }
