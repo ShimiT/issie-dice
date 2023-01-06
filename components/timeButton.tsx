@@ -55,19 +55,19 @@ const TimeButtons = () => {
     const [isActive4, setIsActive4] = useState(false);
     const [globalState] = useGlobalStore();
     if (globalState.recoveryTime == 0) {
-        useEffect(()=>{
+        useEffect(() => {
             setIsActive1(true)
         }, [])
     } else if (globalState.recoveryTime == 5) {
-        useEffect(()=>{
+        useEffect(() => {
             setIsActive2(true)
         }, [])
     } else if (globalState.recoveryTime == 10) {
-        useEffect(()=>{
+        useEffect(() => {
             setIsActive3(true)
         }, [])
     } else if (globalState.recoveryTime == 20) {
-        useEffect(()=>{
+        useEffect(() => {
             setIsActive4(true)
         }, [])
     }
@@ -99,7 +99,7 @@ const TimeButtons = () => {
 };
 
 const getButton = (item, buttonStyle, functions) => {
-    const [globalState,setGlobalState] = useGlobalStore();
+    const [globalState, setGlobalState] = useGlobalStore();
 
     function setRecoveryTime(timeInput) {
         setGlobalState({

@@ -18,30 +18,30 @@ const initialState = {
     size: 'M',
 };
 
-const persistedKeys = ["count","recoveryTime", "recoveryOn", "size"];
+const persistedKeys = ["count", "recoveryTime", "recoveryOn", "size"];
 
 
 
 export default function App() {
-  return (
-      <GlobalStoreProvider
-          initialState={initialState}
-          persistedKeys={persistedKeys}
-      ><NavigationContainer>
-              <Navigator>
-                  <Stack.Screen
-                      name="home"
-                      component={Home}
-                      options={{
-                          headerRight: () => (
-                            <SettingsButton></SettingsButton>
-                          ),
-                          title: 'Issie-Dice'
-                      }}
-                  ></Stack.Screen>
-                  <Stack.Screen name="Settings" component={Settings} />
-              </Navigator>
-          </NavigationContainer>
-      </GlobalStoreProvider>
-  );
+    return (
+        <GlobalStoreProvider
+            initialState={initialState}
+            persistedKeys={persistedKeys}
+        ><NavigationContainer>
+                <Navigator>
+                    <Stack.Screen
+                        name="home"
+                        component={Home}
+                        options={{
+                            headerRight: () => (
+                                <SettingsButton></SettingsButton>
+                            ),
+                            title: 'Issie-Dice'
+                        }}
+                    ></Stack.Screen>
+                    <Stack.Screen name="Settings" component={Settings} />
+                </Navigator>
+            </NavigationContainer>
+        </GlobalStoreProvider>
+    );
 }
