@@ -1,30 +1,96 @@
-import { ImageBackground, View, StyleSheet, Pressable } from 'react-native';
-import { Button } from '@react-native-material/core';
-import Cube from '../cube';
-import { useState } from 'react';
+import {
+  ImageBackground,
+  View,
+  StyleSheet,
+  Pressable,
+  Image
+} from 'react-native';
+import Cube, { CubeFace } from '../components/cube';
+import { useLayoutEffect, useState } from 'react';
 import React from 'react';
+import HomeHeader from '../components/HomeHeader';
 
 const Home = ({ navigation }: any) => {
-  const [boardMode, setBoardMode] = useState(false)
+  const [boardMode, setBoardMode] = useState(false);
+  const [faces, setFaces] = useState<CubeFace[]>([
+    {
+      image: require('../assets/dice-six-faces-one.png'),
+      opacity: 1,
+      isTransparent: false,
+      reflectivity: 0
+    },
+    {
+      image: require('../assets/dice-six-faces-two.png'),
+      opacity: 1,
+      isTransparent: true,
+      reflectivity: 0
+    },
+    {
+      image: require('../assets/dice-six-faces-three.png'),
+      opacity: 1,
+      isTransparent: true,
+      reflectivity: 0
+    },
+    {
+      image: require('../assets/dice-six-faces-four.png'),
+      opacity: 1,
+      isTransparent: true,
+      reflectivity: 0
+    },
+    {
+      image: require('../assets/dice-six-faces-five.png'),
+      opacity: 1,
+      isTransparent: true,
+      reflectivity: 0
+    },
+    {
+      image: require('../assets/dice-six-faces-six.png'),
+      opacity: 1,
+      isTransparent: true,
+      reflectivity: 1
+    }
+  ]);
 
   const handlePress = () => {
-    // Use the Tts.speak method to play the text as a sound
-    console.log("yoni")
-    // Speech.speak("Goren")
-    setBoardMode(true)
+    setBoardMode(true);
   };
 
+  /**
+   * Create the custom header inside the Home screen
+   * for better control on events
+   */
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      header: () => (
+        <HomeHeader
+          onSettingsPressed={() => {
+            navigation.navigate('settings');
+          }}
+        />
+      )
+    });
+  }, [navigation]);
 
   return (
-    <Pressable style={{ height: "100%", width: "100%" }} onPress={handlePress}>
+    <Pressable style={{ height: '100%', width: '100%' }} onPress={handlePress}>
       <View style={styles.container}>
-        <ImageBackground style={styles.image} resizeMode='cover' source={require('../assets/logo.svg')} >
-          {boardMode && <Cube onBack={() => setBoardMode(false)} />}
+        <ImageBackground
+          style={styles.image}
+          resizeMode="cover"
+          source={require('../assets/background.png')}
+        >
+          {boardMode && (
+            <Cube
+              faces={faces}
+              numOfCubes={2}
+              surfaceBackground={require('../assets/background.png')}
+              cuebesSize={3}
+            />
+          )}
         </ImageBackground>
       </View>
     </Pressable>
   );
-
 
   // chat gpt
 
@@ -59,7 +125,6 @@ const Home = ({ navigation }: any) => {
   //     </View>
   //   </View>
   // }
-
 
   // return (
   //   <View style={styles.container}>
@@ -111,9 +176,7 @@ const Home = ({ navigation }: any) => {
   //     </View>
   //   </View>
   // );
-}
-
-
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -129,14 +192,11 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: '#F5F5F5',
     borderRadius: 10,
-    maxWidth: 150,
+    maxWidth: 150
   },
   image: {
-    resizeMode: "center",
-    // flex: 1,
     width: '100%',
-    height: '90%',
-    justifyContent: "center"
+    height: '100%'
   },
   button: {
     width: 50,
@@ -144,31 +204,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFF',
-    borderRadius: 25,
+    borderRadius: 25
   },
 
   buttonText: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#FFF',
-  },
+    color: '#FFF'
+  }
 });
-
-
-const timeStyles = StyleSheet.create({
-  timeButton: {
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#333034',
-    borderRadius: 20,
-  },
-  buttonText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFF',
-  },
-})
 
 export default Home;
