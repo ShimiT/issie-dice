@@ -37,7 +37,7 @@ function createCamera(gl: ExpoWebGLRenderingContext) {
     1000
   );
 
-  camera.position.set(1, -15, 17);
+  camera.position.set(0, -15, 17);
   camera.quaternion.x = 0.1;
   camera.quaternion.z = 0.0;
   camera.quaternion.y = 0.0;
@@ -302,6 +302,10 @@ const Cube = (props: CubeProps) => {
       gl.endFrameEXP();
     };
 
+    // addAWall(world, scene, 100, 5,
+    //   new MeshBasicMaterial({ color: 0x00ffff, opacity: 0.8, side: DoubleSide }), new Vector3(0, -16, 7), new Vector3(_90deg, 0, 0),
+    //   cubeMaterial)
+
     // addAWall(
     //   world,
     //   scene,
@@ -333,11 +337,11 @@ const Cube = (props: CubeProps) => {
             var angVel = Math.random() * 10;
             const pos = [-1, 1];
             vCubeState[i].position = new CANNON.Vec3(
-              (i + 1) * pos[i % 2] * 5,
+              (i + 1) * pos[i % 2],
               -16,
               7
             );
-            vCubeState[i].velocity = getVelocity(0, 3, 5);
+            vCubeState[i].velocity = getVelocity(0, 0, 2);
             vCubeState[i].angularVelocity = new CANNON.Vec3(
               angVel,
               angVel,
