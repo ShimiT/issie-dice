@@ -257,7 +257,7 @@ const Cube = (props: CubeProps) => {
       const pos = [-1, 1];
       const body = new Body({
         mass: 10,
-        position: new CANNON.Vec3(i * pos[(i - 1) % 2] * 5, -16, 7),
+        position: new CANNON.Vec3(0, - 5 - 10 * i, 7),
         shape: new Box(new CANNON.Vec3(1, 1, 1)),
         material: cubeMaterial,
         linearDamping: 0.1,
@@ -337,8 +337,8 @@ const Cube = (props: CubeProps) => {
             var angVel = Math.random() * 10;
             const pos = [-1, 1];
             vCubeState[i].position = new CANNON.Vec3(
-              (i + 1) * pos[i % 2],
-              -16,
+              0,
+              - 5 - 10 * i,
               7
             );
             vCubeState[i].velocity = getVelocity(0, 0, 2);
