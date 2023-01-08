@@ -6,12 +6,24 @@ import {
   Image
 } from 'react-native';
 import Cube, { CubeFace } from '../components/cube';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import React from 'react';
 import HomeHeader from '../components/HomeHeader';
+import { useGlobalStore } from 'react-native-global-store';
+import { Audio } from 'expo-av';
+import diceTypes from '../constants/diceTypes';
+import cloneDeep from 'lodash.clonedeep';
+import { Snackbar } from '@react-native-material/core';
 
 const Home = ({ navigation }: any) => {
-  const [boardMode, setBoardMode] = useState(false);
+  const [globalState, setGlobalState] = useGlobalStore();
+  const [revision, setRevision] = useState(0);
+  const [canRollTheDice, setCanRollTheDice] = useState(true);
+  const [roll, setRoll] = useState(false);
+  const [rollAgainMessage, setRollAgainMessage] = useState('');
+
+  let rollAgainCounter: number = 0;
+
   const [faces, setFaces] = useState<CubeFace[]>([
     {
       image: require('../assets/dice-six-faces-one.png'),
@@ -51,10 +63,6 @@ const Home = ({ navigation }: any) => {
     }
   ]);
 
-  const handlePress = () => {
-    setBoardMode(true);
-  };
-
   /**
    * Create the custom header inside the Home screen
    * for better control on events
@@ -71,111 +79,121 @@ const Home = ({ navigation }: any) => {
     });
   }, [navigation]);
 
+  useEffect(() => {
+    setRevision(revision + 1);
+    setCubeFaces(globalState.diceType);
+  }, [globalState]);
+
+  const setCubeFaces = (diceType: string) => {
+    // get the dice type faces from dice types constant
+    const type = diceTypes.find((item) => item.type === diceType);
+    if (!type) {
+      return;
+    }
+
+    const _faces: CubeFace[] = cloneDeep(faces);
+
+    type.faces.forEach((face, index) => {
+      if (type.faceType === 'color') {
+        _faces[index].image = '';
+        _faces[index].color = face;
+      } else {
+        _faces[index].image = require(`../assets/${face}`);
+      }
+    });
+
+    setFaces(_faces);
+  };
+
+  const getCubeSize = () => {
+    switch (globalState.cubeSize) {
+      case 'S':
+        return 2;
+      case 'M':
+        return 3;
+      case 'L':
+        return 4;
+      case 'XL':
+        return 5;
+      default:
+        return 3;
+    }
+  };
+
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync(
+      require('../assets/rolling.mp3')
+    );
+    await sound.playAsync();
+  }
+
+  const handleDiceRecoveryTime = () => {
+    // handle recovery time
+    if (globalState.recoveryTime > 0) {
+      rollAgainCounter = globalState.recoveryTime;
+      const timer = setInterval(() => {
+        setRollAgainMessage(
+          `You can roll again in ${rollAgainCounter} seconds`
+        );
+        rollAgainCounter--;
+        if (rollAgainCounter < 0) {
+          clearInterval(timer);
+          setRollAgainMessage('');
+        }
+      }, 1000);
+
+      // setTimeout(() => {
+      //   setRollAgainMessage('');
+      // }, 2000);
+      // disable interactions and enable them after recovery time
+      setCanRollTheDice(false);
+      setTimeout(() => {
+        setCanRollTheDice(true);
+      }, globalState.recoveryTime * 1000);
+    }
+  };
+
   return (
-    <Pressable style={{ height: '100%', width: '100%' }} onPress={handlePress}>
+    <Pressable
+      style={{ height: '100%', width: '100%' }}
+      disabled={!canRollTheDice}
+      onPress={() => {
+        // roll the dice
+        setRoll(true);
+        handleDiceRecoveryTime();
+        playSound();
+      }}
+    >
       <View style={styles.container}>
         <ImageBackground
           style={styles.image}
           resizeMode="cover"
           source={require('../assets/background.png')}
         >
-          {boardMode && (
+          {roll && (
             <Cube
+              key={revision}
               faces={faces}
-              numOfCubes={2}
+              numOfCubes={globalState.numOfCubes}
               surfaceBackground={require('../assets/background.png')}
-              cuebesSize={3}
+              cuebesSize={getCubeSize()}
+              disabled={!canRollTheDice}
+              onRoll={() => {
+                playSound();
+                handleDiceRecoveryTime();
+              }}
             />
           )}
         </ImageBackground>
+        {rollAgainMessage && (
+          <Snackbar
+            message={rollAgainMessage}
+            style={{ position: 'absolute', start: 16, end: 16, bottom: 16 }}
+          />
+        )}
       </View>
     </Pressable>
   );
-
-  // chat gpt
-
-  // const dropDownBar = ({ navigation }) => {
-  //   <View style={styles.container}>
-  //     <View style={styles.containerForCounterWrapper}>
-  //       <View style={styles.containerForRecoveryTimes}>
-  //         <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(0)}>
-  //           <Text style={styles.buttonText}>0</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(5)}>
-  //           <Text style={styles.buttonText}>5</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(10)}>
-  //           <Text style={styles.buttonText}>10</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(20)}>
-  //           <Text style={styles.buttonText}>20</Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </View>
-  //     <View style={styles.containerForCounterWrapper}>
-  //       <View style={styles.containerForCounter}>
-  //         <TouchableOpacity style={styles.button} onPress={handleDecrement}>
-  //           <Text style={styles.buttonText}>-</Text>
-  //         </TouchableOpacity>
-  //         <Text style={styles.count}>{count}</Text>
-  //         <TouchableOpacity style={styles.button} onPress={handleIncrement}>
-  //           <Text style={styles.buttonText}>+</Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </View>
-  //   </View>
-  // }
-
-  // return (
-  //   <View style={styles.container}>
-  //     <View style={styles.containerForCounterWrapper}>
-  //       <View style={styles.containerForRecoveryTimes}>
-  //         <Button title="5 seconds" style={timeStyles.timeButton} titleStyle={timeStyles.buttonText} onPress={() => handleTime(0)}>
-  //           {/* <Text style={styles.buttonText}>0</Text> */}
-  //         </Button>
-  //         <TouchableOpacity style={timeStyles.timeButton} onPress={() => handleTime(5)}>
-  //           <Text style={styles.buttonText}>5</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity style={timeStyles.timeButton} onPress={() => handleTime(10)}>
-  //           <Text style={styles.buttonText}>10</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity style={timeStyles.timeButton} onPress={() => handleTime(20)}>
-  //           <Text style={styles.buttonText}>20</Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </View>
-  //     <View style={styles.containerForCounterWrapper}>
-  //       <View style={styles.containerForCounter}>
-  //         <TouchableOpacity style={styles.button} onPress={handleDecrement}>
-  //           <Text style={styles.buttonText}>-</Text>
-  //         </TouchableOpacity>
-  //         <Text style={styles.count}>{count}</Text>
-  //         <TouchableOpacity style={styles.button} onPress={handleIncrement}>
-  //           <Text style={styles.buttonText}>+</Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </View>
-  //   </View>
-  // );
-
-  // return (
-  //   <View style={styles.containerForCounterWrapper}>
-  //     <View style={styles.containerForRecoveryTimes}>
-  //       <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(0)}>
-  //         <Text style={styles.buttonText}>0</Text>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(5)}>
-  //         <Text style={styles.buttonText}>5</Text>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(10)}>
-  //         <Text style={styles.buttonText}>10</Text>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity style={styles.timeButton} onPress={() => handleTime(20)}>
-  //         <Text style={styles.buttonText}>20</Text>
-  //       </TouchableOpacity>
-  //     </View>
-  //   </View>
-  // );
 };
 
 const styles = StyleSheet.create({

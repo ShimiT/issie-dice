@@ -1,15 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Renderer, TextureLoader } from 'expo-three';
 import { ExpoWebGLRenderingContext, GLView } from 'expo-gl';
-import CANNON, { Body, Box, Material, Plane, Vec3, World } from 'cannon';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { Audio } from 'expo-av';
-
+import CANNON, { Body, Box, Material, Plane, World } from 'cannon';
+import {
+  GestureResponderEvent,
+  Pressable,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
 
 var getVelocity = (x: number = 0, y: number = 0, z: number = 0) =>
   new CANNON.Vec3(x, y, z);
 const round = (num: number) => (Math.round(num * 100) / 100).toFixed(2);
-var firstTime = 1
+var firstTime = 1;
 
 import {
   Scene,
@@ -20,15 +24,11 @@ import {
   DoubleSide,
   PlaneGeometry,
   DirectionalLight,
-  AxesHelper,
   Color,
-  CameraHelper,
   HemisphereLight,
   MeshPhongMaterial,
   Fog,
-  Vector3,
-  FrontSide,
-  BackSide
+  Vector3
 } from 'three';
 
 function createCamera(gl: ExpoWebGLRenderingContext) {
@@ -49,7 +49,8 @@ function createCamera(gl: ExpoWebGLRenderingContext) {
 
 export interface CubeFace {
   // path to an image
-  image: string;
+  image?: string;
+  color?: string;
   opacity: number;
   reflectivity: number;
   isTransparent: boolean;
@@ -60,6 +61,8 @@ interface CubeProps {
   faces: CubeFace[];
   surfaceBackground: string;
   cuebesSize: number;
+  disabled: boolean;
+  onRoll: (event: GestureResponderEvent) => void;
 }
 
 const Cube = (props: CubeProps) => {
@@ -73,24 +76,12 @@ const Cube = (props: CubeProps) => {
 
   const [sound, setSound] = React.useState();
 
-  // props.numOfCubes = 2;
-
-  async function playSound() {
-    console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync(require('../assets/rolling.mp3')
-    );
-    setSound(sound);
-
-    console.log('Playing Sound');
-    await sound.playAsync();
-  }
-
   React.useEffect(() => {
     return sound
       ? () => {
-        console.log('Unloading Sound');
-        sound.unloadAsync();
-      }
+          console.log('Unloading Sound');
+          sound.unloadAsync();
+        }
       : undefined;
   }, [sound]);
 
@@ -142,7 +133,6 @@ const Cube = (props: CubeProps) => {
     cubesMaterial: Material
   ) => {
     //visual
-    //const w1 = new PlaneGeometry(width, height);
     const w1 = new BoxGeometry(width, height, 0.1);
     const wall = new Mesh(w1, material);
     wall.position.copy(pos);
@@ -189,17 +179,18 @@ const Cube = (props: CubeProps) => {
     // renderer.setSize(window.innerWidth, window.innerHeight);
 
     // var cubes = createCubes(loader, numOfCubes);
-    const cubeMaterials = props.faces.map(
-      (face) =>
-        new MeshBasicMaterial({
-          // color: 0xff0000,
-          map: new TextureLoader().load(face.image),
-          transparent: face.isTransparent,
-          opacity: face.opacity,
-          side: DoubleSide,
-          reflectivity: 0
-        })
-    );
+    const cubeMaterials = props.faces.map((face) => {
+      const material = new MeshBasicMaterial({
+        transparent: face.isTransparent,
+        opacity: face.opacity,
+        side: DoubleSide,
+        color: face.color,
+        map: face.image ? new TextureLoader().load(face.image) : null,
+        reflectivity: face.reflectivity
+      });
+
+      return material;
+    });
 
     // create cubes based on num of cubes and cube materials
     const cubes: Mesh[] = [];
@@ -261,7 +252,7 @@ const Cube = (props: CubeProps) => {
       const pos = [-1, 1];
       const body = new Body({
         mass: 10,
-        position: new CANNON.Vec3(0, - 5 - 10 * i, 7),
+        position: new CANNON.Vec3(0, -5 - 10 * i, 7),
         shape: new Box(new CANNON.Vec3(1, 1, 1)),
         material: cubeMaterial,
         linearDamping: 0.1,
@@ -329,7 +320,6 @@ const Cube = (props: CubeProps) => {
 
     if (firstTime) {
       firstTime = 0;
-      playSound();
     }
   };
 
@@ -340,11 +330,18 @@ const Cube = (props: CubeProps) => {
           width: '100%',
           height: '100%'
         }}
-        onPress={() => {
+        onPress={(event) => {
+          console.log(props.disabled);
+          // if disable is true
+          // we will not roll the dice again
+          if (props.disabled) {
+            return;
+          }
+
           for (let i = 0; i < vCubeState.length; i++) {
-            var res = Math.random() * 12 + 2;
-            var angVel = Math.random() * 10;
-            const pos = [-1, 1];
+            // const res = Math.random() * 12 + 2;
+            const angVel = Math.random() * 10;
+            // const pos = [-1, 1];
             vCubeState[i].position = returnCannon(vCubeState.length, i);
             vCubeState[i].velocity = getVelocity(0, 0, 2);
             vCubeState[i].angularVelocity = new CANNON.Vec3(
@@ -353,7 +350,7 @@ const Cube = (props: CubeProps) => {
               angVel
             );
           }
-          playSound()
+          props.onRoll(event);
         }}
       >
         <GLView
@@ -406,27 +403,11 @@ export default Cube;
 
 function returnCannon(numOfCubes, i): CANNON.Vec3 {
   if (numOfCubes == 1) {
-    return new CANNON.Vec3(
-      0,
-      -10,
-      7
-    );
+    return new CANNON.Vec3(0, -10, 7);
   } else if (numOfCubes == 2) {
-    return new CANNON.Vec3(
-      0,
-      - 5 - 10 * i,
-      7
-    );
+    return new CANNON.Vec3(0, -5 - 10 * i, 7);
   } else if (numOfCubes == 3) {
-    return new CANNON.Vec3(
-      0,
-      - 2 - 8 * i,
-      7
-    );
+    return new CANNON.Vec3(0, -2 - 8 * i, 7);
   }
-  return new CANNON.Vec3(
-    0,
-    -10,
-    7
-  );
+  return new CANNON.Vec3(0, -2 - 8 * i, 7);
 }
