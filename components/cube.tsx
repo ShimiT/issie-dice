@@ -9,6 +9,8 @@ import { Audio } from 'expo-av';
 var getVelocity = (x: number = 0, y: number = 0, z: number = 0) =>
   new CANNON.Vec3(x, y, z);
 const round = (num: number) => (Math.round(num * 100) / 100).toFixed(2);
+var firstTime = 1
+
 import {
   Scene,
   Mesh,
@@ -322,6 +324,11 @@ const Cube = (props: CubeProps) => {
 
     // call render
     render();
+
+    if (firstTime) {
+      firstTime = 0;
+      playSound();
+    }
   };
 
   return (
