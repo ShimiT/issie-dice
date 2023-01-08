@@ -73,6 +73,8 @@ const Cube = (props: CubeProps) => {
 
   const [sound, setSound] = React.useState();
 
+  // props.numOfCubes = 2;
+
   async function playSound() {
     console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync(require('../assets/rolling.mp3')
@@ -343,11 +345,7 @@ const Cube = (props: CubeProps) => {
             var res = Math.random() * 12 + 2;
             var angVel = Math.random() * 10;
             const pos = [-1, 1];
-            vCubeState[i].position = new CANNON.Vec3(
-              0,
-              - 5 - 10 * i,
-              7
-            );
+            vCubeState[i].position = returnCannon(vCubeState.length, i);
             vCubeState[i].velocity = getVelocity(0, 0, 2);
             vCubeState[i].angularVelocity = new CANNON.Vec3(
               angVel,
@@ -405,3 +403,30 @@ const styles = StyleSheet.create({
 });
 
 export default Cube;
+
+function returnCannon(numOfCubes, i): CANNON.Vec3 {
+  if (numOfCubes == 1) {
+    return new CANNON.Vec3(
+      0,
+      -10,
+      7
+    );
+  } else if (numOfCubes == 2) {
+    return new CANNON.Vec3(
+      0,
+      - 5 - 10 * i,
+      7
+    );
+  } else if (numOfCubes == 3) {
+    return new CANNON.Vec3(
+      0,
+      - 2 - 8 * i,
+      7
+    );
+  }
+  return new CANNON.Vec3(
+    0,
+    -10,
+    7
+  );
+}
