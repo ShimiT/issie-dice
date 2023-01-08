@@ -3,6 +3,8 @@ import { Renderer, TextureLoader } from 'expo-three';
 import { ExpoWebGLRenderingContext, GLView } from 'expo-gl';
 import CANNON, { Body, Box, Material, Plane, Vec3, World } from 'cannon';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Audio } from 'expo-av';
+
 
 var getVelocity = (x: number = 0, y: number = 0, z: number = 0) =>
   new CANNON.Vec3(x, y, z);
@@ -66,6 +68,27 @@ const Cube = (props: CubeProps) => {
   );
   const [reload, setReload] = useState<number>(0);
   const [camPosition, setCamPosition] = useState<any>({ x: 0, y: 0, z: 0 });
+
+  const [sound, setSound] = React.useState();
+
+  async function playSound() {
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync(require('../assets/rolling.mp3')
+    );
+    setSound(sound);
+
+    console.log('Playing Sound');
+    await sound.playAsync();
+  }
+
+  React.useEffect(() => {
+    return sound
+      ? () => {
+        console.log('Unloading Sound');
+        sound.unloadAsync();
+      }
+      : undefined;
+  }, [sound]);
 
   const updateCameraPosition = useCallback(
     (field: 'x' | 'y' | 'z', value: number) => {
@@ -321,6 +344,7 @@ const Cube = (props: CubeProps) => {
               angVel
             );
           }
+          playSound()
         }}
       >
         <GLView
