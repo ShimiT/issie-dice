@@ -2,11 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Renderer, TextureLoader } from 'expo-three';
 import { ExpoWebGLRenderingContext, GLView } from 'expo-gl';
 import CANNON, { Body, Box, Material, Plane, Vec3 } from 'cannon';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, Button } from 'react-native';
 import Slider from '@react-native-community/slider';
-import { Sound } from 'react-native-sound'
-
-import rollingSound from './assets/rolling.mp3';
+import { Audio } from 'expo-av';
 
 // var Sound = require('react-native-sound');
 
@@ -134,25 +132,7 @@ function createLights() {
 }
 
 function playSound() {
-    console.log('in sound')
-    Sound.setCategory('Playback');
 
-    var diceSound = new Sound(rollingSound, (error) => {
-        if (error) {
-            console.log(error);
-            return;
-        }
-        console.log('sound load success')
-        diceSound.play((success) => {
-            if (success) {
-                console.log('successfully finished playing');
-            } else {
-                console.log('playback failed due to audio decoding errors');
-            }
-        });
-    });
-
-    diceSound.play();
 }
 
 function Cube(props: any) {
@@ -161,6 +141,28 @@ function Cube(props: any) {
     const [stateCamera, setStateCamera] = useState<PerspectiveCamera | undefined>(undefined);
     const [reload, setReload] = useState<number>(0);
     const [camPosition, setCamPosition] = useState<any>({ x: 0, y: 0, z: 0 });
+
+    const [sound, setSound] = React.useState();
+
+    async function playSound() {
+        console.log('Loading Sound');
+        const { sound } = await Audio.Sound.createAsync(require('./assets/rolling.mp3')
+        );
+        // setSound(sound);
+
+        console.log('Playing Sound');
+        await sound.playAsync();
+    }
+
+    React.useEffect(() => {
+        return sound
+            ? () => {
+                console.log('Unloading Sound');
+                // sound.unloadAsync();
+            }
+            : undefined;
+    }, [sound]);
+
 
 
     const updateCameraPosition = useCallback((field: "x" | "y" | "z", value: number) => {
@@ -284,6 +286,7 @@ function Cube(props: any) {
 
     return (
         <View style={styles.main}>
+            <Button title="Play Sound" onPress={playSound} />
             <View style={styles.slidersWrapper}>
                 <View style={styles.sliderWrapper}>
                     <Text>X : {camPosition.x}</Text><Slider style={styles.slider} minimumValue={-10} maximumValue={10}
