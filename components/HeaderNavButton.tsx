@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
 interface IHeaderIconButtonProps {
   icon: string;
   color?: string;
+  disabled: boolean;
   onPress: (event: GestureResponderEvent) => void;
   colors?: string[];
 }
@@ -27,6 +28,7 @@ interface IHeaderIconButtonProps {
 const defaultProps: IHeaderIconButtonProps = {
   icon: '',
   color: 'white',
+  disabled: false,
   onPress: () => {},
   colors: ['#746D75', '#5A545A']
 };
@@ -35,6 +37,7 @@ const HeaderIconButton: React.FC<IHeaderIconButtonProps> = (props) => {
   return (
     <LinearGradient colors={props.colors ?? []} style={styles.headerButton}>
       <IconButton
+        disabled={props.disabled}
         icon={(iprops) => (
           <Icon name={props.icon} {...iprops} color={props.color} />
         )}

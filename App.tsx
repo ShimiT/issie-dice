@@ -13,15 +13,25 @@ import Settings from './pages/SettingsScreen';
 import { View } from 'react-native';
 import { IconComponentProvider } from '@react-native-material/core';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import IStoreState from './interfaces/IStoreState';
 
 const initialState = {
   count: 1,
-  recoveryTime: 10,
+  recoveryTime: 5,
+  numOfCubes: 2,
   recoveryOn: false,
-  size: 'M'
+  size: 'S',
+  cubeSize: 'M',
+  diceType: 'dots'
 };
 
-const persistedKeys = ['count', 'recoveryTime', 'recoveryOn', 'size'];
+const persistedKeys = [
+  // 'count',
+  // 'recoveryTime',
+  // 'recoveryOn',
+  // 'size',
+  // 'cubeSize'
+];
 
 export default function App() {
   return (
