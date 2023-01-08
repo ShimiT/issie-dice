@@ -32,55 +32,56 @@ import {
 
 function createCamera(gl: ExpoWebGLRenderingContext) {
     const camera = new PerspectiveCamera(
-        75,
+        100,
         gl.drawingBufferWidth / gl.drawingBufferHeight,
         0.1,
         1000
     );
 
-    gl.canvas.width = gl.drawingBufferWidth;
-    gl.canvas.height = gl.drawingBufferHeight;
+    //gl.canvas.width = gl.drawingBufferWidth;
+    //gl.canvas.height = gl.drawingBufferHeight;
 
-    camera.position.set(1, -15, 10);
-    camera.quaternion.x = 0.4;
-    camera.quaternion.z = 0.1;
+    camera.position.set(1, -15, 17);
+    camera.quaternion.x = 0.1;
+    camera.quaternion.z = 0.0;
+    camera.quaternion.y = 0.0;
 
     return camera
 }
 
 function createCubes(loader: TextureLoader, numOfCubes: number) {
 
-    const geometry = new BoxGeometry(1, 1, 1);
+    const geometry = new BoxGeometry(3, 3, 3);
     const cubeMaterials = [
         new MeshBasicMaterial({
             // color: 0xff0000,
-            map: loader.load(require('./assets/dice1.png')),
+            map: loader.load(require('./assets/dice-six-faces-one.png')),
+            transparent: false, opacity: 1, side: DoubleSide, reflectivity: 0
+        }),
+        new MeshBasicMaterial({
+            // color: 0xff0000,
+            map: loader.load(require('./assets/dice-six-faces-two.png')),
             transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
         }),
         new MeshBasicMaterial({
             // color: 0xff0000,
-            map: loader.load(require('./assets/dice2.png')),
+            map: loader.load(require('./assets/dice-six-faces-three.png')),
             transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
         }),
         new MeshBasicMaterial({
             // color: 0xff0000,
-            map: loader.load(require('./assets/dice3.png')),
+            map: loader.load(require('./assets/dice-six-faces-four.png')),
             transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
         }),
         new MeshBasicMaterial({
             // color: 0xff0000,
-            map: loader.load(require('./assets/dice4.png')),
+            map: loader.load(require('./assets/dice-six-faces-five.png')),
             transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
         }),
         new MeshBasicMaterial({
             // color: 0xff0000,
-            map: loader.load(require('./assets/dice5.png')),
-            transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
-        }),
-        new MeshBasicMaterial({
-            // color: 0xff0000,
-            map: loader.load(require('./assets/dice6.png')),
-            transparent: true, opacity: 1, side: DoubleSide, reflectivity: 0
+            map: loader.load(require('./assets/dice-six-faces-six.png')),
+            transparent: true, opacity: 1, side: DoubleSide, reflectivity: 1
         })];
 
     const cubes = [];
@@ -97,16 +98,16 @@ function createVCubes(cubeMaterial: CANNON.Material, numOfCubes: number): Array<
     const cubeShape = new Box(new CANNON.Vec3(1, 1, 1));
 
     const vCubes = [];
+    const pos = [-1, 1]
     for (let i = 1; i <= numOfCubes; i++) {
         var vCube = new Body({
             mass: 10, // kg
-            position: START_POS.clone(), // m
+            position: new CANNON.Vec3(i * pos[(i - 1) % 2] * 5, -16, 7), // m
             shape: cubeShape,
             material: cubeMaterial,
             linearDamping: 0.1,
-            velocity: getVelocity(0, 10, 0),
+            velocity: getVelocity(0, 3, 5),
             angularVelocity: getAngularVelocity(),
-            //quaternion: new CANNON.Quaternion(10, 3, 10, 10)
         });
         vCubes.push(vCube);
     }
@@ -146,9 +147,9 @@ function Cube(props: any) {
 
     async function playSound() {
         console.log('Loading Sound');
-        const { sound } = await Audio.Sound.createAsync(require('./assets/rolling.mp3')
+        const { sound } = await Audio.Sound.createAsync(require('./assets/rolling3.mp3')
         );
-        // setSound(sound);
+        setSound(sound);
 
         console.log('Playing Sound');
         await sound.playAsync();
@@ -158,7 +159,7 @@ function Cube(props: any) {
         return sound
             ? () => {
                 console.log('Unloading Sound');
-                // sound.unloadAsync();
+                sound.unloadAsync();
             }
             : undefined;
     }, [sound]);
@@ -247,20 +248,14 @@ function Cube(props: any) {
 
         // Create contact material behaviour
         var cube_ground_mat = new CANNON.ContactMaterial(groundMaterial, cubeMaterial, { friction: 0.1, restitution: 0.7 });
-        //var cube_ground_mat2 = new CANNON.ContactMaterial(groundMaterial, cubeMaterial2, { friction: 0.1, restitution: 0.7 });
         world.addContactMaterial(cube_ground_mat);
-        //world.addContactMaterial(cube_ground_mat2);
-        var renderStep = 10
-        var ss = 1
+
         const render = () => {
             requestAnimationFrame(render);
 
             // progress in the "world"
-            world.step(1 / renderStep);
-            ss++
-            if (ss == 15) {
-                renderStep = 25
-            }
+            world.step(1 / 30);
+
 
             // update opengl cube with virtual cube
             for (let i = 0; i < vCubes.length; i++) {
@@ -286,8 +281,7 @@ function Cube(props: any) {
 
     return (
         <View style={styles.main}>
-            <Button title="Play Sound" onPress={playSound} />
-            <View style={styles.slidersWrapper}>
+            {/* <View style={styles.slidersWrapper}>
                 <View style={styles.sliderWrapper}>
                     <Text>X : {camPosition.x}</Text><Slider style={styles.slider} minimumValue={-10} maximumValue={10}
                         value={stateCamera?.position.x}
@@ -305,21 +299,25 @@ function Cube(props: any) {
                         value={stateCamera?.position.z}
                     />
                 </View>
-            </View>
+            </View> */}
             <Pressable
                 style={{
-                    width: window.innerWidth - 40,
-                    height: window.innerHeight - 80,
-                    top: 40,
+                    width: window.innerWidth - 80,
+                    height: window.innerHeight - 40,
+                    //paddingBottom: 150,
+                    //top: 40
                 }}
                 onPress={() => {
                     for (let i = 0; i < vCubeState.length; i++) {
-                        var ex = Math.random() < 0.5 ? -1 : 1;
-                        var res = (Math.random() * 12) * ex
+                        //var ex = Math.random() < 0.5 ? -1 : 1;
+                        var res = (Math.random() * 12) + 2
                         var angVel = Math.random() * 10
-                        vCubeState[i].velocity = getVelocity(res, 0, res);
+                        const pos = [-1, 1]
+                        vCubeState[i].position = new CANNON.Vec3((i + 1) * pos[i % 2] * 5, -16, 7)
+                        vCubeState[i].velocity = getVelocity(0, 3, 5);
                         vCubeState[i].angularVelocity = new CANNON.Vec3(angVel, angVel, angVel);
                     }
+                    playSound()
                 }} >
                 <GLView style={{
                     width: "100%",
